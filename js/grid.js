@@ -130,7 +130,7 @@ function dragLeave(e){
 
     console.log('Left: ' + e.target.getAttribute('id'));
 
-    //If we aren't holding shift, unselect when we leave the box
+    //If we aren't holding control, unselect when we leave the box
     if(!e.ctrlKey)
       e.target.className = 'clock';
 
