@@ -11,6 +11,7 @@ function onLoaded(){
   for(i = 0; i < clocks.length; i++){
 
     clocks[i].addEventListener('dragstart', dragStart, false);
+    clocks[i].addEventListener('dragend', dragStopped, false);
 
   }
 
@@ -40,7 +41,7 @@ function onLoaded(){
 function dragStart(e){
 
   console.log('Dragging: ' + e.target.getAttribute('id'));
-  e.dataTransfer.effectAllowed='move';
+  e.dataTransfer.effectAllowed='copy';
   e.dataTransfer.setData('Text', e.target.getAttribute('id'));
   e.dataTransfer.setDragImage(e.target, 0, 0);
 
@@ -50,18 +51,68 @@ function dragStart(e){
 }
 
 /**
+ * Called when drag event stops
+ */
+function dragStopped(e){
+
+  e.preventDefault();
+  console.log('Stopped: ' + e.target.getAttribute('id'));
+
+  //Populate targets with dragged item
+  var selectedGrids = document.getElementsByClassName('selected');
+
+  /* When you remove 'selected' from a grid, the element is also
+   * removed from the selectedGrids variable automatically.
+   * Hence you need a loop to just loop while length > 0
+   *
+   * Took a while to figure that stupidity out.
+   */
+
+  while(selectedGrids.length > 0){
+
+    /* If we don't have a BR then this is the first clock added to this
+     * grid position.  So just append HTML
+     * If we do have BR, need to remove existing clock
+     */
+    if(selectedGrids[0].innerHTML.indexOf('<br>') == -1)
+      selectedGrids[0].innerHTML += '<br>' + e.target.getAttribute('id');
+    else{
+
+      selectedGrids[0].innerHTML =
+          selectedGrids[0].innerHTML.substring(0, 5) + '<br>'
+          + e.target.getAttribute('id');
+
+    }
+
+    selectedGrids[0].style = e.target.getAttribute('style');
+    selectedGrids[0].className = 'clock';
+
+  }
+
+  //Reset current dragged just in case
+  currentRivClock = '';
+
+}
+
+/**
  * Called when anything is dragged into this box
  */
 function dragEnter(e){
 
   e.preventDefault();
-  console.log('Entered: ' + e.target.getAttribute('id'));
 
-  //Amend border to show selection (if it doesn't have it already)
-  var classes = e.target.className;
+  //BUG FIX: Can be TEXT if you drag directly on text instead of DIV
+  if(e.target instanceof HTMLDivElement){
 
-  if(classes.indexOf('selected') == -1)
-    e.target.className += ' selected';
+    console.log('Entered: ' + e.target.getAttribute('id'));
+
+    //Amend border to show selection (if it doesn't have it already)
+    var classes = e.target.className;
+
+    if(classes.indexOf('selected') == -1)
+      e.target.className += ' selected';
+
+  }
 
 }
 
@@ -71,7 +122,16 @@ function dragEnter(e){
 function dragLeave(e){
 
   e.preventDefault();
-  console.log('Left: ' + e.target.getAttribute('id'));
+
+  if(e.target instanceof HTMLDivElement){
+
+    console.log('Left: ' + e.target.getAttribute('id'));
+
+    //If we aren't holding shift, unselect when we leave the box
+    if(!e.ctrlKey)
+      e.target.className = 'clock';
+
+  }
 
 }
 
@@ -81,26 +141,11 @@ function dragLeave(e){
 function dropped(e){
 
   e.preventDefault();
-  console.log('Dropped: ' + e.target.getAttribute('id'));
 
-  //reset selected
-  var selectedGrids = document.getElementsByClassName('selected');
-
-  /* When you remove 'selected' from a grid, the element is also
-   * removed from the selectedGrids variable automatically.
-   * Hence you need a loop to just loop while length > 0
-   *
-   * Took a while to figure that stupidity out.
-   */
-  while(selectedGrids.length > 0){
-
-    selectedGrids[0].className = 'clock';
-
-  }
+  console.log('Dropped: ' + currentRivClock + ' onto ' +
+      e.target.getAttribute('id'));
 
 }
 
 //Hook into web page load
 window.addEventListener("load", onLoaded, false);
-
-
