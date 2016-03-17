@@ -74,9 +74,11 @@ function dragStopped(e){
      * grid position.  So just append HTML
      * If we do have BR, need to remove existing clock
      */
-    if(selectedGrids[0].innerHTML.indexOf('<br>') == -1)
+    if(selectedGrids[0].innerHTML.indexOf('<br>') == -1){
+
       selectedGrids[0].innerHTML += '<br>' + e.target.getAttribute('id');
-    else{
+
+    }else{
 
       selectedGrids[0].innerHTML =
           selectedGrids[0].innerHTML.substring(0, 5) + '<br>'
@@ -85,6 +87,7 @@ function dragStopped(e){
     }
 
     selectedGrids[0].style = e.target.getAttribute('style');
+    selectedGrids[0].setAttribute('name', e.target.getAttribute('id'));
     selectedGrids[0].className = 'clock';
 
   }
