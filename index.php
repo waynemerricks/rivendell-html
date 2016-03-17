@@ -7,8 +7,8 @@
     </head>
     <body>
         <div id="clocks">
-          <div id="HR1" class="rivclock" draggable="true">HR1</div>
-          <div id="HR2" class="rivclock" draggable="true">HR2</div>
+          <div style="background: red" id="HR1" class="rivclock" draggable="true">HR1</div>
+          <div style="background: blue" id="HR2" class="rivclock" draggable="true">HR2</div>
           <div class="spacer"></div>
         </div>
         <div id="grid">
