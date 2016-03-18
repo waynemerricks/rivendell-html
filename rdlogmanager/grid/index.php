@@ -58,7 +58,7 @@
         }//End Hour For Loop
 ?>
             <div class="spacer"></div>
-	  </div>
+          </div>
 <?php
     }//End days loop
 
