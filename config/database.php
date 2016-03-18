@@ -24,7 +24,7 @@
    * Gets a PDO connection to MySQL
    * @return PDO MySQL connection, set this to NULL to close connection
    */
-  function getPDOMySQL(){
+  function getDatabaseConnection(){
 
     $PDO = NULL;
 

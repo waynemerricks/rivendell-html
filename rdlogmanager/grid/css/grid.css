@@ -41,6 +41,13 @@ h2 {
 
 }
 
+.rivclock {
+
+  border: 1px solid black;
+  margin-left: 5px;
+
+}
+
 .selected {
 
   border: 2px solid skyblue;
@@ -56,12 +63,42 @@ h2 {
 #clocks {
 
   float: left;
-  width: 120px;
-  
+  width: 240px;
+  overflow-y: auto;
+  height: 100vh;
+  overflow-x: auto;
+
 }
 
-#clocks .clock {
+#grid {
 
+  height: 100vh;
+  overflow: auto;
+
+}
+
+div.clockName {
+
+  background: white;
+  width: 140px;
+  height: 40px;
+
+  border: 1px solid black;
+
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+
+  -moz-user-select: none;
   float: left;
+  margin-left: 60px;
+  margin-top: -67px;
 
+  padding: 5px;
+
+}
+
+h2.left {
+
+  text-align: left;
+  margin-left: 10px;
 }
