@@ -51,6 +51,8 @@ SLOC	Directory	SLOC-by-Language (Sorted)
 276     rdlogin         cpp=276
 209     pam_rd          cpp=209
 
+*generated using David A. Wheeler's 'SLOCCount'.
+
 Big portions of rdadmin, logedit, log manager and library could be entirely
 replaced with web pages.  If we could take these off the todo list you can
 save about 40,000 lines of code.  I haven't looked too clearly at the libs
