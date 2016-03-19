@@ -65,13 +65,13 @@ h2 {
   float: left;
   width: 240px;
   overflow-y: auto;
-  height: 100vh;
+  height: 85vh;
   overflow-x: auto;
 }
 
 #grid {
 
-  height: 100vh;
+  height: 85vh;
   overflow: auto;
 
 }
