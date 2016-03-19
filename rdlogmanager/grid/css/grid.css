@@ -131,11 +131,41 @@ div.clock > div.data {
 
 }
 
+#services select, input {
+
+  height: 2em;
+
+}
+
 #services label {
 
   font-weight: bold;
 
 }
 
+/* Grid Clear, Save */
+#gridform {
 
+  float:right;
+
+}
+
+#gridform button {
+
+  width: 100px;
+  height: 2em;
+
+}
+
+button.red {
+
+  background: #FF7878;
+
+}
+
+button.green {
+
+  background: #E1F5C4;
+
+}
 

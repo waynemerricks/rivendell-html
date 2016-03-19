@@ -200,9 +200,36 @@ function clearGrid(gridId){
   dataDiv.innerHTML = '';
   dataDiv.style.display = 'none';
 
-  //Make sure close has default margin-top offset
+  //Make sure close is hidden
   var closeDiv = document.getElementsByName(gridId + 'Close');
   closeDiv[0].style.display = 'none';
+
+}
+
+/**
+ * Clears all grid entries
+ */
+function emptyGrid(){
+
+  if(confirm('Clear current grid of all clocks?')){
+
+    for(i = 0; i < 168; i++)
+      clearGrid('clock' + i);
+
+  }
+
+}
+
+/**
+ * Saves the current grid in the services table
+ */
+function saveGrid(serviceName){
+
+  if(confirm('Save current grid for ' + serviceName + '?')){
+
+    //TODO
+
+  }
 
 }
 
