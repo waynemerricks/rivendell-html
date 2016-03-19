@@ -42,19 +42,31 @@ function onLoaded(){
  */
 function mouseEnter(e){
 
-  console.log('Showing Close for: ' + e.target.getAttribute('id'));
   var clockId = e.target.getAttribute('id');
-  var closeDiv = document.getElementsByName(clockId + 'Close');
-  closeDiv[0].style.display = 'block';
+
+  //Check if we have data, if yes, show close icon
+  if(document.getElementById(clockId + 'Data').innerHTML.length > 0){
+
+    console.log('Showing Close for: ' + e.target.getAttribute('id'));
+    var closeDiv = document.getElementsByName(clockId + 'Close');
+    closeDiv[0].style.display = 'block';
+
+  }
 
 }
 
 function mouseLeave(e){
 
-  console.log('Hiding Close for: ' + e.target.getAttribute('id'));
   var clockId = e.target.getAttribute('id');
-  var closeDiv = document.getElementsByName(clockId + 'Close');
-  closeDiv[0].style.display = 'none';
+
+  //Check if we have data, if yes, hide close icon
+  if(document.getElementById(clockId + 'Data').innerHTML.length > 0){
+
+    console.log('Hiding Close for: ' + e.target.getAttribute('id'));
+    var closeDiv = document.getElementsByName(clockId + 'Close');
+    closeDiv[0].style.display = 'none';
+
+  }
 
 }
 
@@ -192,6 +204,7 @@ function clearGrid(gridId){
   //Make sure close has default margin-top offset
   var closeDiv = document.getElementsByName(gridId + 'Close');
   closeDiv[0].style.marginTop = '-13px';
+  closeDiv[0].style.display = 'none';
 
 }
 
