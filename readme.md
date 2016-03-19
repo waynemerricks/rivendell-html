@@ -5,6 +5,10 @@ Rivendell HTML
 In simple terms, I'm trying to replace the non-critical parts of Rivendell
 with HTML, Javascript and PHP.
 
+Tested with Riv 2.10.3 (Tryphon Repos).  The service table was changed
+after this version to pull the CLOCKS into a SVC_CLOCKS table.  This won't
+work properly with newer versions.
+
 ** What do you mean non-critical? **
 
 Anything that doesn't have to run in real time e.g. rdairplay for radio 
