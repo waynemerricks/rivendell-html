@@ -17,7 +17,7 @@
 
     while($row = $results->fetch()){
 
-      $clocks[] = $row;
+      $clocks[$row['NAME']] = $row;
 
     }
 

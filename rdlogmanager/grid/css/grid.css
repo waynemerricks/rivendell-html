@@ -109,11 +109,11 @@ div.close {
   height: 20px;
   background-image: url("../images/close.png");
   z-index: 10;
-  display: none;
-  margin-top: -13px;
   margin-left: 28px;
+  margin-top: -28px;
   position: absolute;
-  
+  display: none;
+
 }
 
 div.clock > div.data {

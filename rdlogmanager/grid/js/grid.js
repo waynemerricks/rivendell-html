@@ -118,7 +118,6 @@ function dragStopped(e){
     //Increase closeDiv margin top offset to compensate (CSS is confusing)
     var closeDiv = document.getElementsByName(
           selectedGrids[0].getAttribute('id') + 'Close');
-    closeDiv[0].style.marginTop = '-28px';
 
     selectedGrids[0].style = e.target.getAttribute('style');
     selectedGrids[0].setAttribute('name', e.target.getAttribute('id'));
@@ -203,7 +202,6 @@ function clearGrid(gridId){
 
   //Make sure close has default margin-top offset
   var closeDiv = document.getElementsByName(gridId + 'Close');
-  closeDiv[0].style.marginTop = '-13px';
   closeDiv[0].style.display = 'none';
 
 }

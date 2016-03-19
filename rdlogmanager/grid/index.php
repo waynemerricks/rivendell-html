@@ -7,8 +7,6 @@
   //Open database connection
   $PDO = getDatabaseConnection();
 
-  $serviceNames = getServiceNames($PDO);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +20,8 @@
           <h2>Clocks</h2>
 <?php
 
+  $serviceNames = getServiceNames($PDO);
+  $grid = getGrid($PDO, $serviceNames[0]);
   $clocks = getRivendellClocks($PDO, 'Production');
 
   foreach($clocks as $clock){
@@ -54,12 +54,24 @@
 
           $clockNo++;
 
+          $display = 'none';
+          $color = 'white';
+          $data = '';
+
+          if(strlen(trim($grid['CLOCK' . $clockNo])) > 0){
+
+            $display = 'block';
+            $color = $clocks[$grid['CLOCK' . $clockNo]]['COLOR'];
+            $data  = $clocks[$grid['CLOCK' . $clockNo]]['SHORT_NAME'];
+
+          }
+
 ?>
-              <div class="clock" id="clock<?php echo $clockNo; ?>">
+              <div style="background: <?php echo $color; ?>;" class="clock" id="clock<?php echo $clockNo; ?>">
                 <div>
 <?php echo sprintf('%02d', $hour) . '-' . sprintf('%02d', $hour + 1); ?>
                 </div>
-                <div class="data" id="clock<?php echo $clockNo; ?>Data"></div>
+                <div style="display: <?php echo $display; ?>;" class="data" id="clock<?php echo $clockNo; ?>Data"><?php echo $data; ?></div>
                 <div name="clock<?php echo $clockNo; ?>Close" class="close" onClick="clearGrid('clock<?php echo $clockNo; ?>');"></div>
               </div>
 <?php
