@@ -6,7 +6,13 @@
 
   //Open database connection
   $PDO = getDatabaseConnection();
+  $serviceNames = getServiceNames($PDO);
 
+  //Check for post with service change
+  $selectedService = 0;
+
+  if(isset($_POST['serviceName']) && $_POST['serviceName'] != 0)
+    $selectedService = $_POST['serviceName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,13 +22,38 @@
         <link href="css/grid.css" rel="stylesheet" type="text/css">
     </head>
     <body>
+        <div id="services">
+          <form id="serviceForm" method="post" action="index.php">
+            <label for="serviceList">Services:
+              <select name="serviceName">
+<?php
+
+  $i = -1;
+
+  foreach($serviceNames as $name){
+
+    $i++;
+    $selected='';
+
+    if($selectedService == $i)
+      $selected = 'selected ';
+
+?>
+                <option <?php echo $selected; ?>value="<?php echo $i; ?>"><?php echo $name; ?></option>
+<?php
+  } //End foreach services
+?>
+              </select>
+            </label>
+            <input type="submit" value="Change Service">
+          </form>
+        </div>
         <div id="clocks">
           <h2>Clocks</h2>
 <?php
 
-  $serviceNames = getServiceNames($PDO);
-  $grid = getGrid($PDO, $serviceNames[0]);
-  $clocks = getRivendellClocks($PDO, 'Production');
+  $grid = getGrid($PDO, $serviceNames[$selectedService]);
+  $clocks = getRivendellClocks($PDO, $serviceNames[$selectedService]);
 
   foreach($clocks as $clock){
 
@@ -37,7 +68,7 @@
           <div class="spacer"></div>
         </div>
         <div id="grid">
-          <h2 class="left">Grid</h2>
+          <h2 class="left"><?php echo $serviceNames[$selectedService]; ?> Grid</h2>
 <?php
 
     $clockNo = -1;

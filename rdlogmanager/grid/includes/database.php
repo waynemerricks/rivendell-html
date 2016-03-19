@@ -10,18 +10,39 @@
 
     $clocks = array();
 
-    $sql = 'SELECT `NAME`, `SHORT_NAME`, `COLOR` FROM `CLOCKS`';
+    //Get the clocks from the perms table
+    $sql = 'SELECT `CLOCK_NAME` FROM `CLOCK_PERMS`
+            WHERE `SERVICE_NAME` = :service
+            ORDER BY `CLOCK_NAME` ASC';
 
-    $results = $PDO->query($sql);
-    $results->setFetchMode(PDO::FETCH_ASSOC);
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindParam(':service', $service);
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $stmt->execute();
 
-    while($row = $results->fetch()){
+    while($row = $stmt->fetch())
+      $clocks[] = $row['CLOCK_NAME'];
 
+    $stmt = NULL;
+
+    /* Format into a csv and requery CLOCK table for clocks we have
+     * permission to see.
+     */
+    $clockNames = join(',', array_fill(0, count($clocks), '?'));
+
+    $sql = 'SELECT `NAME`, `SHORT_NAME`, `COLOR` FROM `CLOCKS`
+            WHERE `NAME` IN (' . $clockNames . ')';
+
+    $stmt = $PDO->prepare($sql);
+    $stmt->setFetchMode(PDO::FETCH_ASSOC);
+    $stmt->execute($clocks);
+
+    $clocks = array();
+
+    while($row = $stmt->fetch())
       $clocks[$row['NAME']] = $row;
 
-    }
-
-    $reults = NULL;
+    $stmt = NULL;
 
     return $clocks;
 
