@@ -17,11 +17,7 @@
 
     while($row = $results->fetch()){
 
-      $clock = array();
-      $clock['name'] = $row['NAME'];
-      $clock['short_name'] = $row['SHORT_NAME'];
-      $clock['color'] = $row['COLOR'];
-      $clocks[] = $clock;
+      $clocks[] = $row;
 
     }
 
@@ -32,7 +28,27 @@
   }
 
   //TODO
-  function getServiceNames($PDO){}
+  function getServiceNames($PDO){
+
+    $services = array();
+
+    $sql = 'SELECT `NAME` FROM `SERVICES` ORDER BY `NAME` ASC';
+
+    $results = $PDO->query($sql);
+    $results->setFetchMode(PDO::FETCH_ASSOC);
+
+    while($row = $results->fetch()){
+
+      foreach($row as $field)
+        $services[] = $field;
+
+    }
+
+    $results = NULL;
+
+    return $services;
+
+  }
 
   function getServices($PDO){}
 

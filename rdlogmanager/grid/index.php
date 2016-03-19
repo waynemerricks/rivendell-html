@@ -7,6 +7,8 @@
   //Open database connection
   $PDO = getDatabaseConnection();
 
+  $serviceNames = getServiceNames($PDO);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,10 +27,10 @@
   foreach($clocks as $clock){
 
 ?>
-          <div style="background: <?php echo $clock['color']; ?>"
-               id="<?php echo $clock['short_name']; ?>" class="rivclock"
-               draggable="true"><?php echo $clock['short_name']; ?></div>
-          <div class="clockName"><?php echo $clock['name']; ?></div>
+          <div style="background: <?php echo $clock['COLOR']; ?>"
+               id="<?php echo $clock['SHORT_NAME']; ?>" class="rivclock"
+               draggable="true"><?php echo $clock['SHORT_NAME']; ?></div>
+          <div class="clockName"><?php echo $clock['NAME']; ?></div>
 <?php
   }
 ?>
