@@ -67,7 +67,7 @@ h2 {
   overflow-y: auto;
   height: 100vh;
   overflow-x: auto;
-
+position: relative;
 }
 
 #grid {
@@ -101,4 +101,23 @@ h2.left {
 
   text-align: left;
   margin-left: 10px;
+}
+
+div.close {
+
+  width: 20px;
+  height: 20px;
+  background-image: url("../images/close.png");
+  z-index: 10;
+  display: none;
+  margin-top: -13px;
+  margin-left: 28px;
+  position: absolute;
+  
+}
+
+div.clock > div.data {
+
+  display: hidden;
+
 }

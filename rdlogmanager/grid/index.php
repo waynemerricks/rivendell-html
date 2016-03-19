@@ -53,7 +53,13 @@
           $clockNo++;
 
 ?>
-              <div class="clock" id="clock<?php echo $clockNo; ?>"><?php echo sprintf('%02d', $hour) . '-' . sprintf('%02d', $hour + 1); ?></div>
+              <div class="clock" id="clock<?php echo $clockNo; ?>">
+                <div>
+<?php echo sprintf('%02d', $hour) . '-' . sprintf('%02d', $hour + 1); ?>
+                </div>
+                <div class="data" id="clock<?php echo $clockNo; ?>Data"></div>
+                <div name="clock<?php echo $clockNo; ?>Close" class="close" onClick="clearGrid('clock<?php echo $clockNo; ?>');"></div>
+              </div>
 <?php
         }//End Hour For Loop
 ?>

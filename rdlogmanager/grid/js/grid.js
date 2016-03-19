@@ -26,12 +26,35 @@ function onLoaded(){
     grids[i].addEventListener('dragenter', dragEnter, false);
     grids[i].addEventListener('dragleave', dragLeave, false);
     grids[i].addEventListener('drop', dropped, false);
+    grids[i].addEventListener('mouseenter', mouseEnter, false);
+    grids[i].addEventListener('mouseleave', mouseLeave, false);
 
   }
 
   //Need to track what targets we've entered and what clock is being dragged
   enteredTargets = [];
   currentRivClock = '';
+
+}
+
+/**
+ * Called when mouse is over any of the grid targets
+ */
+function mouseEnter(e){
+
+  console.log('Showing Close for: ' + e.target.getAttribute('id'));
+  var clockId = e.target.getAttribute('id');
+  var closeDiv = document.getElementsByName(clockId + 'Close');
+  closeDiv[0].style.display = 'block';
+
+}
+
+function mouseLeave(e){
+
+  console.log('Hiding Close for: ' + e.target.getAttribute('id'));
+  var clockId = e.target.getAttribute('id');
+  var closeDiv = document.getElementsByName(clockId + 'Close');
+  closeDiv[0].style.display = 'none';
 
 }
 
@@ -74,17 +97,16 @@ function dragStopped(e){
      * grid position.  So just append HTML
      * If we do have BR, need to remove existing clock
      */
-    if(selectedGrids[0].innerHTML.indexOf('<br>') == -1){
+    var dataDiv = document.getElementById(
+          selectedGrids[0].getAttribute('id') + 'Data');
 
-      selectedGrids[0].innerHTML += '<br>' + e.target.getAttribute('id');
+    dataDiv.innerHTML = e.target.getAttribute('id');
+    dataDiv.style.display = 'block';
 
-    }else{
-
-      selectedGrids[0].innerHTML =
-          selectedGrids[0].innerHTML.substring(0, 5) + '<br>'
-          + e.target.getAttribute('id');
-
-    }
+    //Increase closeDiv margin top offset to compensate (CSS is confusing)
+    var closeDiv = document.getElementsByName(
+          selectedGrids[0].getAttribute('id') + 'Close');
+    closeDiv[0].style.marginTop = '-28px';
 
     selectedGrids[0].style = e.target.getAttribute('style');
     selectedGrids[0].setAttribute('name', e.target.getAttribute('id'));
@@ -112,7 +134,7 @@ function dragEnter(e){
     //Amend border to show selection (if it doesn't have it already)
     var classes = e.target.className;
 
-    if(classes.indexOf('selected') == -1)
+    if(classes.indexOf('selected') == -1 && classes.indexOf('clock') != -1)
       e.target.className += ' selected';
 
   }
@@ -126,7 +148,8 @@ function dragLeave(e){
 
   e.preventDefault();
 
-  if(e.target instanceof HTMLDivElement){
+  if(e.target instanceof HTMLDivElement
+      && e.target.className.indexOf('clock') != -1){
 
     console.log('Left: ' + e.target.getAttribute('id'));
 
@@ -150,5 +173,27 @@ function dropped(e){
 
 }
 
+/**
+ * Called when clear grids are clicked
+ */
+function clearGrid(gridId){
+
+  console.log('Clearing: ' + gridId);
+
+  //Set Grid back to white
+  var grid = document.getElementById(gridId);
+  grid.style.background = 'white';
+
+  //Clear Data Div and hide
+  var dataDiv = document.getElementById(gridId + 'Data');
+  dataDiv.innerHTML = '';
+  dataDiv.style.display = 'none';
+
+  //Make sure close has default margin-top offset
+  var closeDiv = document.getElementsByName(gridId + 'Close');
+  closeDiv[0].style.marginTop = '-13px';
+
+}
+
 //Hook into web page load
-window.addEventListener("load", onLoaded, false);
+window.addEventListener('load', onLoaded, false);
