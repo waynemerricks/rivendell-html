@@ -13,15 +13,14 @@
 
   if(isset($_POST['serviceName']) && $_POST['serviceName'] != 0)
     $selectedService = $_POST['serviceName'];
+
+  $title = 'Rivendell Grid';
+  $js = 'grid.js';
+  $css = 'grid.css';
+
+  include('../../template/header.php');//Header HTML
+
 ?>
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Rivendell Grid</title>
-        <script src="js/grid.js" type="text/javascript"></script>
-        <link href="css/grid.css" rel="stylesheet" type="text/css">
-    </head>
-    <body>
         <div id="services">
           <form id="serviceForm" method="post" action="index.php">
             <label for="serviceList">Services:
@@ -116,11 +115,11 @@
 ?>
       </div>
 
-    </body>
-</html>
 <?php
 
   //Close DB
   $PDO = NULL;
+
+  include('../../template/footer.php');//Footer HTML
 
 ?>
