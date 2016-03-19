@@ -118,6 +118,6 @@ div.close {
 
 div.clock > div.data {
 
-  display: hidden;
+  display: none;
 
 }
