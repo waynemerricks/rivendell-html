@@ -1,6 +1,6 @@
 # Rivendell HTML
 
-**What is it?**
+### What is it?
 
 In simple terms, I'm trying to replace the non-critical parts of Rivendell
 with HTML, Javascript and PHP.
@@ -9,7 +9,7 @@ Tested with **Riv 2.10.3** (Tryphon Repos).  The service table was changed
 after this version to pull the CLOCKS into a SVC_CLOCKS table.  This won't
 work properly with newer versions.
 
-**What do you mean non-critical?**
+### What do you mean non-critical?
 
 Anything that doesn't have to run in real time e.g. rdairplay for radio 
 output.  This would also apply to rdpanels, caed, ripcd etc.
@@ -17,7 +17,7 @@ output.  This would also apply to rdpanels, caed, ripcd etc.
 Basically most of the non-presenter using bits of Rivendell that don't
 need to happen with low latency audio delays.
 
-**Why?**
+### Why?
 
 There have been murmurings of QT5 updates to Rivendell.  I think this is
 quite a long way off as it looks like an immense amount of work.
@@ -82,11 +82,11 @@ Obviously you could run through everything and get it done but:
   templates.  I think it will be easier to tweak/implement new behaviour
   for these tools in HTML etc than QT/C++ for most people.
 
-**How long will this take?**
+### How long will this take?
 
 I have no idea, this is a spare time/boredom project.
 
-**Anything else you would like to do?**
+### Anything else you would like to do?
 
 I don't know how feasible it is but if I can figure out a way of getting 
 sound cloud style wav form elements in a web page it might even be 
@@ -95,7 +95,7 @@ importing.
 
 These are long term/will never be done goals but you never know.
 
-**Why plain HTML/PHP etc?**
+### Why plain HTML/PHP etc?
 
 I have dabbled with various frameworks (most recently CakePHP, Ionic, 
 Angular) over the years.  You tend to spend about as much time learning 
@@ -114,12 +114,12 @@ Javascript rather than bolting on Angular or CakePHP etc.  JQuery is a
 necessity as pure Javascript GET and POSTS are quite a horrible convluted
 mess and there are some nice JQuery date/time selectors.
 
-**This code is rubbish!**
+### This code is rubbish!
 
 Most probably yes.  I have a background in business apps written in Java.
 I taught myself PHP in an afternoon over 15 years ago.  I still have never
 written any webpage that is complicated enough to bother with Object
-Orientated design.
+Orientated design/custom classes in PHP.
 
 It is all just outputting strings of text and so far simple functions in
 organised files that you can add with includes work for me.
@@ -128,7 +128,7 @@ If you can suggest a framework or way of organising things that makes sense
 feel free to let me know.  If it seems like a good plan I'll refactor to
 make it happen.
 
-**How do I use it?**
+### How do I use it?
 
 Install MySQL/PHP/Apache (standard lamp stack) on a machine somewhere.  If
 you have Rivendell, you already have everything but PHP on at least one
