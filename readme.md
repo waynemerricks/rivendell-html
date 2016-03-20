@@ -24,7 +24,7 @@ quite a long way off as it looks like an immense amount of work.
 
 If look at the source code (approx 200,000 lines):
 
-SLOC	Directory	SLOC-by-Language (Sorted)
+```SLOC	Directory	SLOC-by-Language (Sorted)
 62339   lib             cpp=62339
 33880   *rdadmin*       cpp=33880
 11563   rdairplay       cpp=11563
@@ -53,7 +53,7 @@ SLOC	Directory	SLOC-by-Language (Sorted)
 378     rdpanel         cpp=378
 307     rdselect        cpp=307
 276     rdlogin         cpp=276
-209     pam_rd          cpp=209
+209     pam_rd          cpp=209```
 
 *generated using David A. Wheeler's 'SLOCCount'.
 
