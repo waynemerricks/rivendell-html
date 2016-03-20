@@ -34,6 +34,7 @@ function onLoaded(){
   //Need to track what targets we've entered and what clock is being dragged
   enteredTargets = [];
   currentRivClock = '';
+  validDrop = false;//Flag to test for dnd cancel
 
 }
 
@@ -105,22 +106,29 @@ function dragStopped(e){
 
   while(selectedGrids.length > 0){
 
-    /* If we don't have a BR then this is the first clock added to this
-     * grid position.  So just append HTML
-     * If we do have BR, need to remove existing clock
-     */
-    var dataDiv = document.getElementById(
-          selectedGrids[0].getAttribute('id') + 'Data');
+    if(validDrop){
 
-    dataDiv.innerHTML = e.target.getAttribute('id');
-    dataDiv.style.display = 'block';
+      /* If we don't have a BR then this is the first clock added to this
+       * grid position.  So just append HTML
+       * If we do have BR, need to remove existing clock
+       */
+      var dataDiv = document.getElementById(
+            selectedGrids[0].getAttribute('id') + 'Data');
 
-    //Increase closeDiv margin top offset to compensate (CSS is confusing)
-    var closeDiv = document.getElementsByName(
-          selectedGrids[0].getAttribute('id') + 'Close');
+      dataDiv.innerHTML = e.target.getAttribute('id');
+      dataDiv.style.display = 'block';
 
-    selectedGrids[0].style = e.target.getAttribute('style');
-    selectedGrids[0].setAttribute('name', e.target.getAttribute('id'));
+      //Increase closeDiv margin top offset to compensate (CSS is confusing)
+      var closeDiv = document.getElementsByName(
+            selectedGrids[0].getAttribute('id') + 'Close');
+
+      selectedGrids[0].style = e.target.getAttribute('style');
+      selectedGrids[0].setAttribute('name', e.target.getAttribute('id'));
+
+      validDrop = false; //Reset valid drop var
+
+    }
+
     selectedGrids[0].className = 'clock';
 
   }
@@ -182,6 +190,8 @@ function dropped(e){
   console.log('Dropped: ' + currentRivClock + ' onto ' +
       e.target.getAttribute('id'));
 
+  validDrop = true;
+
 }
 
 /**
@@ -227,7 +237,33 @@ function saveGrid(serviceName){
 
   if(confirm('Save current grid for ' + serviceName + '?')){
 
-    //TODO
+    //Assemble grid clocks
+    var gridClocks = [168];
+
+    for(i = 0; i < 168; i++){
+
+      var clockId = document.getElementById('clock' + i + 'Data').innerHTML;
+      gridClocks[i] = document.getElementById(clockId + '_name').innerHTML;
+
+    }
+
+    /* Now we have a 168 element array with the clock names
+     * use JQuery to post data */
+
+    var save = jQuery.post('saveGrid.php', { service: serviceName,
+          grid: gridClocks })
+        .done(function(data){
+
+          alert(data);
+
+        })
+        .fail(function(XMLHttpRequest, textStatus, errorThrown){
+
+          alert('Failed to save Grid (' + XMLHttpRequest.status + ') '
+              + XMLHttpRequest.statusText);
+          console.log(XMLHttpRequest);
+
+        });
 
   }
 

@@ -64,7 +64,7 @@
           <div style="background: <?php echo $clock['COLOR']; ?>"
                id="<?php echo $clock['SHORT_NAME']; ?>" class="rivclock"
                draggable="true"><?php echo $clock['SHORT_NAME']; ?></div>
-          <div class="clockName"><?php echo $clock['NAME']; ?></div>
+          <div id="<?php echo $clock['SHORT_NAME']; ?>_name" class="clockName"><?php echo $clock['NAME']; ?></div>
 <?php
   }
 ?>
