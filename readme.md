@@ -24,36 +24,37 @@ quite a long way off as it looks like an immense amount of work.
 
 If look at the source code (approx 200,000 lines):
 
-```SLOC	Directory	SLOC-by-Language (Sorted)
-62339   lib             cpp=62339
-33880   *rdadmin*       cpp=33880
-11563   rdairplay       cpp=11563
-11028   utils           cpp=9741,ansic=1170,sh=117
-10989   ripcd           cpp=10989
-8317    *rdlogedit*     cpp=8317
-7549    *rdlogmanager*  cpp=7549
-7319    *rdlibrary*     cpp=7319
-7206    rdcatch         cpp=7206
-5841    cae             cpp=5841
-3764    rdcatchd        cpp=3764
-3494    rlm             ansic=3494
-3461    web             cpp=3461
-2836    rdhpi           cpp=2836
-2002    importers       cpp=1977,sh=25
-1582    tests           cpp=1582
-1528    rdcastmanager   cpp=1528
-869     rdrepld         cpp=869
-677     helpers         sh=390,ansic=201,cpp=86
-557     top_dir         sh=557
-514     rdmonitor       cpp=514
-435     debian          sh=435
-431     scripts         sh=431
-403     rdcartslots     cpp=403
-392     ios             objc=392
-378     rdpanel         cpp=378
-307     rdselect        cpp=307
-276     rdlogin         cpp=276
-209     pam_rd          cpp=209```
+| SLOC	| Directory	     | SLOC-by-Language (Sorted)  |
+| ----- | -------------- | -------------------------- |
+| 62339 | lib            | cpp=62339                  |
+| 33880 | *rdadmin*      | cpp=33880                  |
+| 11563 | rdairplay      | cpp=11563                  |
+| 11028 | utils          | cpp=9741,ansic=1170,sh=117 |
+| 10989 | ripcd          | cpp=10989                  |
+| 8317  | *rdlogedit*    | cpp=8317                   |
+| 7549  | *rdlogmanager* | cpp=7549                   |
+| 7319  | *rdlibrary*    | cpp=7319                   |
+| 7206  | rdcatch        | cpp=7206                   |
+| 5841  | cae            | cpp=5841                   |
+| 3764  | rdcatchd       | cpp=3764                   |
+| 3494  | rlm            | ansic=3494                 |
+| 3461  | web            | cpp=3461                   |
+| 2836  | rdhpi          | cpp=2836                   |
+| 2002  | importers      | cpp=1977,sh=25             |
+| 1582  | tests          | cpp=1582                   |
+| 1528  | rdcastmanager  | cpp=1528                   |
+| 869   | rdrepld        | cpp=869                    |
+| 677   | helpers        | sh=390,ansic=201,cpp=86    |
+| 557   | top_dir        | sh=557                     |
+| 514   | rdmonitor      | cpp=514                    |
+| 435   | debian         | sh=435                     |
+| 431   | scripts        | sh=431                     |
+| 403   | rdcartslots    | cpp=403                    |
+| 392   | ios            | objc=392                   |
+| 378   | rdpanel        | cpp=378                    |
+| 307   | rdselect       | cpp=307                    |
+| 276   | rdlogin        | cpp=276                    |
+| 209   | pam_rd         | cpp=209                    |
 
 *generated using David A. Wheeler's 'SLOCCount'.
 
