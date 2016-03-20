@@ -1,0 +1,193 @@
+body {
+
+  background: lightgrey;
+  padding: 20px;
+
+}
+
+h2 {
+
+  font-weight: bold;
+  text-align: center;
+  margin: 0 auto;
+  font-variant: small-caps;
+  padding-bottom: 8px;
+
+}
+
+.rivclock {
+
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  margin-left: 5px;
+
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  text-decoration: none;
+  -moz-user-select: none;
+
+}
+
+.spacer {
+
+  clear: both;
+
+}
+
+#clocks, #events {
+
+  float: left;
+  width: 240px;
+  overflow-y: auto;
+  height: 85vh;
+  overflow-x: auto;
+
+}
+
+#events {
+
+  float: right;
+
+}
+
+#events .event {
+
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+
+  -moz-user-select: none;
+
+  padding: 5px;
+
+  border: 1px solid black;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  margin-left: 5px;
+
+}
+
+#clocks a {
+
+  text-align: center;
+
+  -moz-user-select: none;
+  text-decoration: none;  
+
+  color: black;
+
+}
+
+/* Editor */
+#editor {
+
+  height: 85vh;
+  overflow: auto;
+  float: left;
+
+}
+
+#start, #end {
+
+  background: green;
+  color: white;
+  border: 1px solid black;
+  padding: 10px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+
+}
+
+#start.selected, #end.selected {
+
+  border: 5px solid skyblue;
+
+}
+
+#end {
+
+  background: red;
+
+}
+
+div.clockName {
+
+  background: white;
+  width: 140px;
+  height: 40px;
+
+  border: 1px solid black;
+
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+
+  -moz-user-select: none;
+  float: left;
+  margin-left: 60px;
+  margin-top: -67px;
+
+  padding: 5px;
+
+}
+
+h2.left {
+
+  text-align: left;
+  margin-left: 10px;
+
+}
+
+/* Services */
+#services {
+
+  margin-bottom: 12px;
+  margin-left: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px black solid;
+
+}
+
+#services select, input {
+
+  height: 2em;
+
+}
+
+#services label {
+
+  font-weight: bold;
+
+}
+
+/* Grid Clear, Save */
+#gridform {
+
+  float:right;
+
+}
+
+#gridform button {
+
+  width: 100px;
+  height: 2em;
+
+}
+
+button.red {
+
+  background: #FF7878;
+
+}
+
+button.green {
+
+  background: #E1F5C4;
+
+}
+
