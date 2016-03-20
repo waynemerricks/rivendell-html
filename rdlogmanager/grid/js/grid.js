@@ -114,9 +114,8 @@ function dragStopped(e){
 
     if(validDrop){
 
-      /* If we don't have a BR then this is the first clock added to this
-       * grid position.  So just append HTML
-       * If we do have BR, need to remove existing clock
+      /* Change data div to dragged clock unless its a delete
+       * in which case just clear it
        */
       var dataDiv = document.getElementById(
             selectedGrids[0].getAttribute('id') + 'Data');
@@ -125,7 +124,7 @@ function dragStopped(e){
 
         clearGrid(selectedGrids[0].getAttribute('id'));
 
-      }else{
+      }else{//Not delete so show divs and change colour to clock
 
         dataDiv.innerHTML = e.target.getAttribute('id');
         dataDiv.style.display = 'block';
