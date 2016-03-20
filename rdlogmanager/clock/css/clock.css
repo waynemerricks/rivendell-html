@@ -54,7 +54,7 @@ h2 {
 
 }
 
-#events .event {
+#events .event, #editor .event {
 
   text-align: center;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -88,6 +88,8 @@ h2 {
   height: 85vh;
   overflow: auto;
   float: left;
+  padding: 10px;
+  border-right: 1px solid black;
 
 }
 
@@ -101,6 +103,8 @@ h2 {
   font-size: 16px;
   font-weight: bold;
   text-align: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
 
 }
 

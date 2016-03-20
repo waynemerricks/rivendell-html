@@ -162,25 +162,35 @@ function dropped(e){
       e.target.getAttribute('id'));
 
   var eventGrid = document.getElementById('editor');
-  var newEvent = document.createElement('div');
-  newEvent.innerHTML='New Thing here';
-  newEvent.setAttribute('class', 'event');
-
+  var clonedEvent = createEventDiv(currentEvent);
+console.log(clonedEvent);
   if(e.target.getAttribute('id') == 'start'){
 
     //Insert After Start
     var afterThis = document.getElementById('start');
-    eventGrid.insertBefore(newEvent, afterThis.nextSibling);
+    eventGrid.insertBefore(clonedEvent, afterThis.nextSibling);
 
   }else if(e.target.getAttribute('id') == 'end'){
 
     //Insert Before End
     var beforeThis = document.getElementById('end');
-    eventGrid.insertBefore(newEvent, beforeThis);
+    eventGrid.insertBefore(clonedEvent, beforeThis);
 
   }
 
   validDrop = true;
+
+}
+
+/**
+ * Creates an event div based on the existing event palette
+ * @param eventName Name of Event Div to base this off
+ * @return HTMLElement containing event and DND stuff
+ */
+function createEventDiv(eventName){
+
+  console.log('Cloning: ' + eventName);
+  return document.getElementById(eventName).cloneNode(true);
 
 }
 
