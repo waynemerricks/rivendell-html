@@ -25,7 +25,7 @@ h2 {
   padding-bottom: 8px;
 }
 
-.clock, .rivclock {
+.clock, .rivclock, .deleteClock {
 
   width: 50px;
   height: 50px;
@@ -41,7 +41,7 @@ h2 {
 
 }
 
-.rivclock {
+.rivclock, .deleteClock {
 
   border: 1px solid black;
   margin-left: 5px;
@@ -76,7 +76,7 @@ h2 {
 
 }
 
-div.clockName {
+div.clockName, div.deleteClockName {
 
   background: white;
   width: 140px;

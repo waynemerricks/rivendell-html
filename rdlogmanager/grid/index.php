@@ -53,6 +53,9 @@
         </div>
         <div id="clocks">
           <h2>Clocks</h2>
+          <div class="deleteClock" id="deleteClock" draggable="true">Delete</div>
+          <div id="deleteClock_name" class="deleteClockName">Delete Clock from Grid</div>
+
 <?php
 
   $grid = getGrid($PDO, $serviceNames[$selectedService]);

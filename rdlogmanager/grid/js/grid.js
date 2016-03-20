@@ -15,6 +15,11 @@ function onLoaded(){
 
   }
 
+  //Add drag events to clock deleter element
+  var deleteClock = document.getElementById('deleteClock');
+  deleteClock.addEventListener('dragstart', dragStart, false);
+  deleteClock.addEventListener('dragend', dragStopped, false);
+
   /*** Grid Targets ***/
 
   //Get all grids and add drag listeners
@@ -92,7 +97,8 @@ function dragStart(e){
 function dragStopped(e){
 
   e.preventDefault();
-  console.log('Stopped: ' + e.target.getAttribute('id'));
+  var droppedId = e.target.getAttribute('id');
+  console.log('Stopped: ' + droppedId);
 
   //Populate targets with dragged item
   var selectedGrids = document.getElementsByClassName('selected');
@@ -115,17 +121,18 @@ function dragStopped(e){
       var dataDiv = document.getElementById(
             selectedGrids[0].getAttribute('id') + 'Data');
 
-      dataDiv.innerHTML = e.target.getAttribute('id');
-      dataDiv.style.display = 'block';
+      if(droppedId == 'deleteClock'){
 
-      //Increase closeDiv margin top offset to compensate (CSS is confusing)
-      var closeDiv = document.getElementsByName(
-            selectedGrids[0].getAttribute('id') + 'Close');
+        clearGrid(selectedGrids[0].getAttribute('id'));
 
-      selectedGrids[0].style = e.target.getAttribute('style');
-      selectedGrids[0].setAttribute('name', e.target.getAttribute('id'));
+      }else{
 
-      validDrop = false; //Reset valid drop var
+        dataDiv.innerHTML = e.target.getAttribute('id');
+        dataDiv.style.display = 'block';
+        selectedGrids[0].style = e.target.getAttribute('style');
+        selectedGrids[0].setAttribute('name', e.target.getAttribute('id'));
+
+      }
 
     }
 
@@ -135,6 +142,7 @@ function dragStopped(e){
 
   //Reset current dragged just in case
   currentRivClock = '';
+  validDrop = false; //Reset valid drop var
 
 }
 
@@ -206,9 +214,9 @@ function clearGrid(gridId){
   grid.style.background = 'white';
 
   //Clear Data Div and hide
-  var dataDiv = document.getElementById(gridId + 'Data');
-  dataDiv.innerHTML = '';
-  dataDiv.style.display = 'none';
+  var clearDataDiv = document.getElementById(gridId + 'Data');
+  clearDataDiv.innerHTML = '';
+  clearDataDiv.style.display = 'none';
 
   //Make sure close is hidden
   var closeDiv = document.getElementsByName(gridId + 'Close');
