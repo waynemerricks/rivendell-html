@@ -2,6 +2,7 @@
 
   //Include files
   include('../../config/database.php');
+  include('../common/database.php');
   include('includes/database.php');
 
   //Open database connection
