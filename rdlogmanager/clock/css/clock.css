@@ -1,7 +1,7 @@
 body {
 
   background: lightgrey;
-  padding: 20px;
+  padding: 20px 5px;
 
 }
 
@@ -12,6 +12,12 @@ h2 {
   margin: 0 auto;
   font-variant: small-caps;
   padding-bottom: 8px;
+
+}
+
+#editor h2 {
+
+  width: 80%;
 
 }
 
@@ -41,7 +47,7 @@ h2 {
 #clocks, #events {
 
   float: left;
-  width: 240px;
+  width: 200px;
   overflow-y: auto;
   height: 85vh;
   overflow-x: auto;
@@ -71,6 +77,14 @@ h2 {
 
 }
 
+#editor .event {
+
+ float: left;
+ width: 80%;
+ clear: both;
+
+}
+
 #clocks a {
 
   text-align: center;
@@ -89,7 +103,29 @@ h2 {
   overflow: auto;
   float: left;
   padding: 10px;
+  padding-top: 0px;
   border-right: 1px solid black;
+
+}
+
+#editor label {
+
+  float: left;
+  font-weight: bold;
+  clear: left;
+  width: 100px;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+
+  -moz-user-select: none;
+
+}
+
+#editor input {
+
+  float: left;
+  clear: right;
+  height: 1em;
 
 }
 
@@ -105,6 +141,10 @@ h2 {
   text-align: center;
   margin-top: 8px;
   margin-bottom: 8px;
+
+  width: 90%;
+  float: left;
+  clear: both;
 
 }
 
@@ -123,7 +163,7 @@ h2 {
 div.clockName {
 
   background: white;
-  width: 140px;
+  width: 100px;
   height: 40px;
 
   border: 1px solid black;
