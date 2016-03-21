@@ -37,39 +37,6 @@ function onLoaded(){
 }
 
 /**
- * Called when mouse is over any of the grid targets
- */
-function mouseEnter(e){
-
-  var clockId = e.target.getAttribute('id');
-
-  //Check if we have data, if yes, show close icon
-  if(document.getElementById(clockId + 'Data').innerHTML.length > 0){
-
-    console.log('Showing Close for: ' + e.target.getAttribute('id'));
-    var closeDiv = document.getElementsByName(clockId + 'Close');
-    closeDiv[0].style.display = 'block';
-
-  }
-
-}
-
-function mouseLeave(e){
-
-  var clockId = e.target.getAttribute('id');
-
-  //Check if we have data, if yes, hide close icon
-  if(document.getElementById(clockId + 'Data').innerHTML.length > 0){
-
-    console.log('Hiding Close for: ' + e.target.getAttribute('id'));
-    var closeDiv = document.getElementsByName(clockId + 'Close');
-    closeDiv[0].style.display = 'none';
-
-  }
-
-}
-
-/**
  * Called when any of our listeners start dragging
  */
 function dragStart(e){
@@ -116,7 +83,6 @@ function dragEnter(e){
 
   e.preventDefault();
 
-  //BUG FIX: Can be TEXT if you drag directly on text instead of DIV
   if(e.target instanceof HTMLDivElement){
 
     console.log('Entered: ' + e.target.getAttribute('id'));
@@ -191,81 +157,6 @@ function createEventDiv(eventName){
 
   console.log('Cloning: ' + eventName);
   return document.getElementById(eventName).cloneNode(true);
-
-}
-
-/**
- * Called when clear grids are clicked
- */
-function clearGrid(gridId){
-
-  console.log('Clearing: ' + gridId);
-
-  //Set Grid back to white
-  var grid = document.getElementById(gridId);
-  grid.style.background = 'white';
-
-  //Clear Data Div and hide
-  var clearDataDiv = document.getElementById(gridId + 'Data');
-  clearDataDiv.innerHTML = '';
-  clearDataDiv.style.display = 'none';
-
-  //Make sure close is hidden
-  var closeDiv = document.getElementsByName(gridId + 'Close');
-  closeDiv[0].style.display = 'none';
-
-}
-
-/**
- * Clears all grid entries
- */
-function emptyGrid(){
-
-  if(confirm('Clear current grid of all clocks?')){
-
-    for(i = 0; i < 168; i++)
-      clearGrid('clock' + i);
-
-  }
-
-}
-
-/**
- * Saves the current grid in the services table
- */
-function saveGrid(serviceName){
-
-  if(confirm('Save current grid for ' + serviceName + '?')){
-
-    //Assemble grid clocks
-    var gridClocks = [168];
-
-    for(i = 0; i < 168; i++){
-
-      var clockId = document.getElementById('clock' + i + 'Data').innerHTML;
-      gridClocks[i] = document.getElementById(clockId + '_name').innerHTML;
-
-    }
-
-    /* Now we have a 168 element array with the clock names
-     * use JQuery to post data */
-
-    var save = jQuery.post('saveGrid.php', { service: serviceName,
-          grid: gridClocks })
-        .done(function(data){
-
-          alert(data);
-
-        })
-        .fail(function(XMLHttpRequest, textStatus, errorThrown){
-
-          alert('Failed to save Grid (' + XMLHttpRequest.status + ') '
-              + XMLHttpRequest.statusText);
-          console.log(XMLHttpRequest);
-
-        });
-
-  }
 
 }
 
