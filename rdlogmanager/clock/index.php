@@ -47,8 +47,8 @@
             </label>
             <input type="submit" value="Change Service">
             <div id="gridform">
-              <button class="red" type="button" onClick="emptyGrid()">Clear</button>
-              <button class="green" type="button" onClick="saveGrid('<?php echo $serviceNames[$selectedService]; ?>')">Save</button>
+              <button class="red" type="button" onClick="emptyClock()">Clear</button>
+              <button class="green" type="button" onClick="saveClock()">Save</button>
            </div>
           </form>
         </div>

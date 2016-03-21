@@ -160,5 +160,23 @@ function createEventDiv(eventName){
 
 }
 
+/**
+ * Called when clear clock is clicked
+ */
+function emptyClock(){
+
+  //TODO
+
+}
+
+/**
+ * Called when save clock is clicked
+ */
+function saveClock(){
+
+  //TODO
+
+}
+
 //Hook into web page load
 window.addEventListener('load', onLoaded, false);
