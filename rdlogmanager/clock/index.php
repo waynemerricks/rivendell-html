@@ -80,6 +80,24 @@
 ?>
           <div class="spacer"></div>
         </div>
+        <div id="events">
+          <h2>Events</h2>
+<?php
+
+  $events = getRivendellEvents($PDO, $serviceNames[$selectedService]);
+
+  foreach($events as $event){
+?>
+          <div draggable="true" id="<?php echo $event['NAME']; ?>" class="event" style="background: <?php echo $event['COLOR']; ?>">
+            <div class="eventName"><?php echo $event['NAME']; ?></div>
+            <div class="eventProperties"><?php echo $event['PROPERTIES']; ?></div>
+            <div class="eventTime">4:00</div>
+          </div>
+<?php
+  } //End events for each
+?>
+
+        </div>
         <div id="editor">
           <h2 class="left">
 <?php
@@ -98,23 +116,6 @@
           <div class="clear"></div>
           <div class="bookends" id="start">Add Events to Start</div>
           <div class="bookends" id="end">Add Events to End</div>
-        </div>
-        <div id="events">
-          <h2>Events</h2>
-<?php
-
-  $events = getRivendellEvents($PDO, $serviceNames[$selectedService]);
-
-  foreach($events as $event){
-?>
-          <div draggable="true" id="<?php echo $event['NAME']; ?>" class="event" style="background: <?php echo $event['COLOR']; ?>">
-            <div class="eventName"><?php echo $event['NAME']; ?></div>
-            <div class="eventProperties"><?php echo $event['PROPERTIES']; ?></div>
-            <div class="eventTime">4:00</div>
-          </div>
-<?php
-  } //End events for each
-?>
         </div>
 <?php
 

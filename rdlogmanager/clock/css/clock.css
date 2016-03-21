@@ -5,6 +5,13 @@ body {
 
 }
 
+#content {
+
+  min-width: 865px;
+  overflow: auto;
+
+}
+
 h2 {
 
   font-weight: bold;
@@ -100,7 +107,7 @@ h2 {
 #editor {
 
   height: 85vh;
-  overflow: auto;
+  overflow: hidden;
   float: left;
   padding: 10px;
   padding-top: 0px;
