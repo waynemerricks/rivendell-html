@@ -107,7 +107,7 @@ h2 {
 #editor {
 
   height: 85vh;
-  overflow: hidden;
+  overflow: auto;
   float: left;
   padding: 10px;
   padding-top: 0px;
