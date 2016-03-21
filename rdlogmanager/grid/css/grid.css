@@ -5,6 +5,13 @@ body {
 
 }
 
+#content {
+
+  min-width: 865px;
+  overflow: auto;
+
+}
+
 #mon, #tue, #wed, #thu, #fri, #sat, #sun {
 
   float: left;
