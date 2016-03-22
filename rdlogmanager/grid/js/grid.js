@@ -31,8 +31,6 @@ function onLoaded(){
     grids[i].addEventListener('dragenter', dragEnter, false);
     grids[i].addEventListener('dragleave', dragLeave, false);
     grids[i].addEventListener('drop', dropped, false);
-    grids[i].addEventListener('mouseenter', mouseEnter, false);
-    grids[i].addEventListener('mouseleave', mouseLeave, false);
 
   }
 
@@ -40,39 +38,6 @@ function onLoaded(){
   enteredTargets = [];
   currentRivClock = '';
   validDrop = false;//Flag to test for dnd cancel
-
-}
-
-/**
- * Called when mouse is over any of the grid targets
- */
-function mouseEnter(e){
-
-  var clockId = e.target.getAttribute('id');
-
-  //Check if we have data, if yes, show close icon
-  if(document.getElementById(clockId + 'Data').innerHTML.length > 0){
-
-    console.log('Showing Close for: ' + e.target.getAttribute('id'));
-    var closeDiv = document.getElementsByName(clockId + 'Close');
-    closeDiv[0].style.display = 'block';
-
-  }
-
-}
-
-function mouseLeave(e){
-
-  var clockId = e.target.getAttribute('id');
-
-  //Check if we have data, if yes, hide close icon
-  if(document.getElementById(clockId + 'Data').innerHTML.length > 0){
-
-    console.log('Hiding Close for: ' + e.target.getAttribute('id'));
-    var closeDiv = document.getElementsByName(clockId + 'Close');
-    closeDiv[0].style.display = 'none';
-
-  }
 
 }
 
@@ -216,10 +181,6 @@ function clearGrid(gridId){
   var clearDataDiv = document.getElementById(gridId + 'Data');
   clearDataDiv.innerHTML = '';
   clearDataDiv.style.display = 'none';
-
-  //Make sure close is hidden
-  var closeDiv = document.getElementsByName(gridId + 'Close');
-  closeDiv[0].style.display = 'none';
 
 }
 

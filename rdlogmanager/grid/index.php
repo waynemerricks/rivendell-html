@@ -110,7 +110,6 @@
 <?php echo sprintf('%02d', $hour) . '-' . sprintf('%02d', $hour + 1); ?>
                 </div>
                 <div style="display: <?php echo $display; ?>;" class="data" id="clock<?php echo $clockNo; ?>Data"><?php echo $data; ?></div>
-                <div name="clock<?php echo $clockNo; ?>Close" class="close" onClick="clearGrid('clock<?php echo $clockNo; ?>');"></div>
               </div>
 <?php
         }//End Hour For Loop

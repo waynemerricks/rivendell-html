@@ -48,6 +48,12 @@ h2 {
 
 }
 
+.clock div {
+
+  pointer-events: none;
+
+}
+
 .rivclock, .deleteClock {
 
   border: 1px solid black;
