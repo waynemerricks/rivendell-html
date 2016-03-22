@@ -22,6 +22,7 @@ function onLoaded(){
   currentEvent = '';
   validDrop = false;//Flag to test for dnd cancel
   currentEvents = 0; //counter for events in this clock
+  eventNumber = 0;
 
 }
 
@@ -55,7 +56,15 @@ function dragStopped(e){
   //TODO Loop selected event grids
   while(selectedGrids.length > 0){
 
-    selectedGrids[0].setAttribute('class', 'bookends');
+    var classes = selectedGrids[0].className;
+    var originalClass = '';
+
+    if(classes.indexOf('bookends') != -1)
+      originalClass = 'bookends';
+    else if(classes.indexOf('post') != -1)
+      originalClass = 'post';
+
+    selectedGrids[0].setAttribute('class', originalClass);
 
   }
 
@@ -71,11 +80,12 @@ function dragStopped(e){
 function dragEnter(e){
 
   e.preventDefault();
-  console.log(e);
 
   if(e.target instanceof HTMLDivElement){
 
-    console.log('Entered: ' + e.target.getAttribute('id'));
+    var id = e.target.getAttribute('id');
+
+    console.log('Entered: ' + id);
 
     //Amend border to show selection (if it doesn't have it already)
     var classes = e.target.className;
@@ -96,14 +106,18 @@ function dragLeave(e){
 
   e.preventDefault();
 
-  if(e.target instanceof HTMLDivElement
-      && e.target.className.indexOf('bookends') != -1){
+  if(e.target instanceof HTMLDivElement){
 
     console.log('Left: ' + e.target.getAttribute('id'));
 
-    //If we aren't holding control, unselect when we leave the box
-    if(!e.ctrlKey)
+    if(e.target.className.indexOf('bookends') != -1)
       e.target.className = 'bookends';
+
+    if(e.target.className.indexOf('pre') != -1)
+      e.target.className = 'pre';
+
+    if(e.target.className.indexOf('post') != -1)
+      e.target.className = 'post';
 
   }
 
@@ -121,7 +135,6 @@ function dropped(e){
 
   var eventGrid = document.getElementById('editor');
   var clonedEvent = createEventDiv(currentEvent);
-  var insertIndex = 0; //Default to start of list
 
   if(e.target.getAttribute('id') == 'start'){
 
@@ -134,17 +147,24 @@ function dropped(e){
     //Insert Before End
     var beforeThis = document.getElementById('end');
     eventGrid.insertBefore(clonedEvent, beforeThis);
-    insertIndex = -1;
+
+  }else if(e.target.getAttribute('id') == 'post'){
+
+    //We want to dop after the parent element of this
+    var parentEvent = e.target.getAttribute('parent');
+    parentEvent = document.getElementById(parentEvent);
+
+    eventGrid.insertBefore(clonedEvent, parentEvent.nextSibling
+        .nextSibling);//2nextSibs to skip over post target
 
   }else{
 
     //Insert somewhere else in list
-    insertIndex = 1;
 
   }
 
   //Create spacers for insertion/moving divs
-  createSpacers(insertIndex, clonedEvent);
+  createSpacers(clonedEvent);
   addDraggableListeners(clonedEvent);
   addDragAndDropListeners(clonedEvent);
 
@@ -159,10 +179,35 @@ function dropped(e){
  */
 function createEventDiv(eventName){
 
-  console.log('Cloning: ' + eventName);
 
-  //Clone event
-  return document.getElementById(eventName).cloneNode(true);
+  /* Check we don't already have a !JS! tag
+   * If we do then don't clone this event just use it
+   */
+  var event = document.getElementById(eventName);
+  var id = event.getAttribute('id');
+
+  if(id.indexOf('!JS!') != 0){
+
+    console.log('Cloning: ' + eventName);
+    event = event.cloneNode(true);
+    id = '!JS!_' + eventNumber + '_'  + id;
+    event.setAttribute('id', id);
+    eventNumber++;
+
+  }else{
+
+    //Already have JS so this is a move not clone
+    console.log('Moving: ' + eventName);
+
+    //Need to remove trailing post div
+    var removePostDiv = event.nextSibling;
+
+    console.log('Removing Post: ' + removePostDiv.getAttribute('parent'));
+    removePostDiv.parentNode.removeChild(removePostDiv);
+
+  }
+
+  return event;
 
 }
 
@@ -172,38 +217,20 @@ function createEventDiv(eventName){
  * @param index Position in list to insert (0 = start, -1 end)
  * @param eventDiv Div that was inserted and needs spacers
  */
-function createSpacers(index, eventDiv){
+function createSpacers(eventDiv){
 
-  console.log('Adding spacers to: ' + eventDiv.getAttribute('id')
-      + ', index: ' + index);
+  console.log('Adding spacers to: ' + eventDiv.getAttribute('id'));
 
   var eventGrid = document.getElementById('editor');
 
-  if(index != 0){
+  var post = document.createElement('div');
+  post.setAttribute('id', 'post');
+  post.setAttribute('class', 'post');
+  post.setAttribute('parent', eventDiv.getAttribute('id'));
 
-    var pre = document.createElement('div');
-    pre.setAttribute('class', 'pre');
-    pre.setAttribute('id', 'pre');
-    pre.setAttribute('parent', eventDiv.getAttribute('id'));
+  eventGrid.insertBefore(post, eventDiv.nextSibling);
 
-    eventGrid.insertBefore(pre, eventDiv);
-
-    addDragAndDropListeners(pre);
-
-  }
-
-  if(index != -1){
-
-    var post = document.createElement('div');
-    post.setAttribute('id', 'pre');
-    post.setAttribute('class', 'post');
-    post.setAttribute('parent', eventDiv.getAttribute('id'));
-
-    eventGrid.insertBefore(post, eventDiv.nextSibling);
-
-    addDragAndDropListeners(post);
-
-  }
+  addDragAndDropListeners(post);
 
 }
 
