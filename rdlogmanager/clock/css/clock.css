@@ -8,6 +8,7 @@ body {
 #content {
 
   min-width: 865px;
+  max-width: 1024px;
   overflow: auto;
 
 }
@@ -106,6 +107,7 @@ h2 {
 /* Editor */
 #editor {
 
+  max-width: 440px;
   height: 85vh;
   overflow: auto;
   float: left;
@@ -242,3 +244,33 @@ button.green {
 
 }
 
+.pre, .post {
+
+  height: 10px;
+  padding: 2px;
+  border: 1px dotted black;
+  background: lightgreen;
+  width: 90%;
+  float: left;
+  clear: both;
+
+}
+
+.post {
+
+  margin-top: -10px;
+
+}
+
+.pre {
+
+  margin-bottom: 5px;
+
+}
+
+.eventName, .eventProperties, .eventTime {
+
+  width: 75%;
+  margin: 0 auto;
+
+}

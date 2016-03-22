@@ -8,26 +8,15 @@ function onLoaded(){
   //Get all Rivendell Event elements and add drag listeners
   var events = document.getElementsByClassName('event');
 
-  for(i = 0; i < events.length; i++){
-
-    events[i].addEventListener('dragstart', dragStart, false);
-    events[i].addEventListener('dragend', dragStopped, false);
-
-  }
+  for(i = 0; i < events.length; i++)
+    addDraggableListeners(events[i]);
 
   /*** Start / Stop Targets ***/
   var targets = [ document.getElementById('start'),
                   document.getElementById('end') ];
 
-  for(i = 0; i < targets.length; i++){
-
-    targets[i].addEventListener('dragover',
-        function(e){e.preventDefault();}, false);
-    targets[i].addEventListener('dragenter', dragEnter, false);
-    targets[i].addEventListener('dragleave', dragLeave, false);
-    targets[i].addEventListener('drop', dropped, false);
-
-  }
+  for(i = 0; i < targets.length; i++)
+    addDragAndDropListeners(targets[i]);
 
   //Need to track what targets we've entered and what clock is being dragged
   currentEvent = '';
@@ -82,6 +71,7 @@ function dragStopped(e){
 function dragEnter(e){
 
   e.preventDefault();
+  console.log(e);
 
   if(e.target instanceof HTMLDivElement){
 
@@ -90,7 +80,9 @@ function dragEnter(e){
     //Amend border to show selection (if it doesn't have it already)
     var classes = e.target.className;
 
-    if(classes.indexOf('selected') == -1 && classes.indexOf('bookends') != -1)
+    if(classes.indexOf('selected') == -1
+          && (classes.indexOf('bookends') != -1
+          || classes.indexOf('event')) )
       e.target.className += ' selected';
 
   }
@@ -129,7 +121,8 @@ function dropped(e){
 
   var eventGrid = document.getElementById('editor');
   var clonedEvent = createEventDiv(currentEvent);
-console.log(clonedEvent);
+  var insertIndex = 0; //Default to start of list
+
   if(e.target.getAttribute('id') == 'start'){
 
     //Insert After Start
@@ -141,8 +134,19 @@ console.log(clonedEvent);
     //Insert Before End
     var beforeThis = document.getElementById('end');
     eventGrid.insertBefore(clonedEvent, beforeThis);
+    insertIndex = -1;
+
+  }else{
+
+    //Insert somewhere else in list
+    insertIndex = 1;
 
   }
+
+  //Create spacers for insertion/moving divs
+  createSpacers(insertIndex, clonedEvent);
+  addDraggableListeners(clonedEvent);
+  addDragAndDropListeners(clonedEvent);
 
   validDrop = true;
 
@@ -156,7 +160,76 @@ console.log(clonedEvent);
 function createEventDiv(eventName){
 
   console.log('Cloning: ' + eventName);
+
+  //Clone event
   return document.getElementById(eventName).cloneNode(true);
+
+}
+
+/**
+ * Creates necessary spacers for event div to enable drag and drop as well
+ * as further insertions or moving oher divs later on
+ * @param index Position in list to insert (0 = start, -1 end)
+ * @param eventDiv Div that was inserted and needs spacers
+ */
+function createSpacers(index, eventDiv){
+
+  console.log('Adding spacers to: ' + eventDiv.getAttribute('id')
+      + ', index: ' + index);
+
+  var eventGrid = document.getElementById('editor');
+
+  if(index != 0){
+
+    var pre = document.createElement('div');
+    pre.setAttribute('class', 'pre');
+    pre.setAttribute('id', 'pre');
+    pre.setAttribute('parent', eventDiv.getAttribute('id'));
+
+    eventGrid.insertBefore(pre, eventDiv);
+
+    addDragAndDropListeners(pre);
+
+  }
+
+  if(index != -1){
+
+    var post = document.createElement('div');
+    post.setAttribute('id', 'pre');
+    post.setAttribute('class', 'post');
+    post.setAttribute('parent', eventDiv.getAttribute('id'));
+
+    eventGrid.insertBefore(post, eventDiv.nextSibling);
+
+    addDragAndDropListeners(post);
+
+  }
+
+}
+
+/**
+ * Helper function to enable this element to become draggable
+ * @param Element to add dragstart and dragend listeners to
+ */
+function addDraggableListeners(element){
+
+    element.addEventListener('dragstart', dragStart, false);
+    element.addEventListener('dragend', dragStopped, false);
+
+}
+
+/**
+ * Helper function to add DnD listeners to a given element
+ * Adds dragover, dragenter, dragleave and drop
+ * @param element Element to add listeners to
+ */
+function addDragAndDropListeners(element){
+
+  element.addEventListener('dragover',
+      function(e){e.preventDefault();}, false);
+  element.addEventListener('dragenter', dragEnter, false);
+  element.addEventListener('dragleave', dragLeave, false);
+  element.addEventListener('drop', dropped, false);
 
 }
 
