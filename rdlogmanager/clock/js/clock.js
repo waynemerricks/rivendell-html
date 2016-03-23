@@ -72,6 +72,8 @@ function dragStopped(e){
   currentEvent = '';
   validDrop = false; //Reset valid drop var
 
+  calculateTimeLeft();
+
 }
 
 /**
@@ -87,13 +89,22 @@ function dragEnter(e){
 
     console.log('Entered: ' + id);
 
-    //Amend border to show selection (if it doesn't have it already)
-    var classes = e.target.className;
+    if(id != null){//null so you don't pick up text elements
 
-    if(classes.indexOf('selected') == -1
-          && (classes.indexOf('bookends') != -1
-          || classes.indexOf('event')) )
-      e.target.className += ' selected';
+      //Amend border to show selection (if it doesn't have it already)
+      var classes = e.target.className;
+
+      if(classes.indexOf('selected') == -1){
+
+        if(classes.indexOf('bookends') != -1
+              || classes.indexOf('event') != -1
+              || classes.indexOf('post') != -1)
+          e.target.className += ' selected';
+
+
+      }
+
+    }
 
   }
 
@@ -110,14 +121,21 @@ function dragLeave(e){
 
     console.log('Left: ' + e.target.getAttribute('id'));
 
-    if(e.target.className.indexOf('bookends') != -1)
-      e.target.className = 'bookends';
+      if(e.target.getAttribute('id') != null){
 
-    if(e.target.className.indexOf('pre') != -1)
-      e.target.className = 'pre';
+      if(e.target.className.indexOf('bookends') != -1)
+        e.target.className = 'bookends';
 
-    if(e.target.className.indexOf('post') != -1)
-      e.target.className = 'post';
+      if(e.target.className.indexOf('pre') != -1)
+        e.target.className = 'pre';
+
+      if(e.target.className.indexOf('post') != -1)
+        e.target.className = 'post';
+
+      if(e.target.className.indexOf('event') != -1)
+        e.target.className = 'event';
+
+    }
 
   }
 
@@ -135,6 +153,7 @@ function dropped(e){
 
   var eventGrid = document.getElementById('editor');
   var clonedEvent = createEventDiv(currentEvent);
+  var spacers = true;
 
   if(e.target.getAttribute('id') == 'start'){
 
@@ -159,12 +178,18 @@ function dropped(e){
 
   }else{
 
-    //Insert somewhere else in list
+    //Replace existing element
+    console.log('Replace element');
+    //Change post div to new parent id
+    e.target.parentNode.replaceChild(clonedEvent, e.target);
+    clonedEvent.nextSibling.parentNode.removeChild(clonedEvent.nextSibling);
 
   }
 
   //Create spacers for insertion/moving divs
-  createSpacers(clonedEvent);
+  if(spacers)
+    createSpacers(clonedEvent);
+
   addDraggableListeners(clonedEvent);
   addDragAndDropListeners(clonedEvent);
 
@@ -275,6 +300,75 @@ function emptyClock(){
 function saveClock(){
 
   //TODO
+
+}
+
+/**
+ * Called to calculate how much time is left in this clock
+ */
+function calculateTimeLeft(){
+
+  var editor = document.getElementById('editor');
+  var times = editor.getElementsByClassName('eventTime');
+  var millis = 0;
+
+  for(i = 0; i < times.length; i++){
+
+    var strTime = times[i].innerHTML;
+    strTime = strTime.split(':');
+
+    if(strTime.length == 2 && strTime[1].indexOf('.') != -1){
+
+      var temp = strTime[1].split('.');
+
+      strTime[1] = temp[0];
+      strTime.push(temp[1]);
+
+    }
+
+    if(strTime.length == 2){
+
+      millis += strTime[0] * 60000;
+      millis += strTime[1] * 1000;
+
+    }
+
+    if(strTime.length == 3)
+      millis += strTime[2] * 100;
+
+  }//End time For
+
+  millis = 3600000 - millis;
+  console.log('Millis Remaining: ' + millis);
+
+  var color = 'white';
+
+  if(millis < 300000)
+    color = 'yellow';
+
+  if(millis == 0)
+    color = 'green';
+
+  if(millis < 0)
+    color = 'red';
+
+  var minutes = Math.floor(millis/60000);
+  millis = millis % 60000;
+
+  var seconds = '' + Math.floor(millis/1000);
+
+  while(seconds.length < 2)
+    seconds = '0' + seconds;
+
+  millis = millis % 1000;
+
+  var tenths = Math.floor(millis/100);
+
+  var timeLeft = document.getElementById('clockTimeLeft');
+  timeLeft.value = minutes + ':' + seconds + '.' + tenths;
+  timeLeft.style.background = color;
+
+  console.log(minutes + ':' + seconds + '.' + tenths);
 
 }
 

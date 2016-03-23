@@ -113,9 +113,11 @@
           <input name="clockName" type="text" maxlength="58" value="<?php echo $selectedClock; ?>">
           <label for="clockShortName">Clock Code:</label>
           <input name="clockShortName" type="text" maxlength="3" value="<?php echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
+          <label for="clockTimeLeft">Time Left:</label>
+          <input id="clockTimeLeft" name="clockTimeLeft" type="text" maxlength="5" value="60:00">
           <div class="clear"></div>
-          <div class="bookends" id="start">Add Events to Start</div>
-          <div class="bookends" id="end">Add Events to End</div>
+          <div class="bookends" id="start"><p>Add Events to Start</p></div>
+          <div class="bookends" id="end"><p>Add Events to End</p></div>
         </div>
 <?php
 

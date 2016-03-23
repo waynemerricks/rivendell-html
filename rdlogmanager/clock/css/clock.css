@@ -170,6 +170,15 @@ h2 {
 
 }
 
+#start p, #end p {
+
+  pointer-events: none;
+  height: 1em;
+  margin-top: 0px;
+  margin-bottom: 0px;
+
+}
+
 div.clockName {
 
   background: white;
@@ -272,5 +281,17 @@ button.green {
   height: 75px;
   background: yellow;
   border: 5px solid skyblue;
+
+}
+
+div.event.selected {
+
+  border: 5px solid skyblue !important;
+
+}
+  
+div.event.selected > div {
+
+  pointer-events: none;
 
 }
