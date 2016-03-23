@@ -63,6 +63,8 @@ function dragStopped(e){
       originalClass = 'bookends';
     else if(classes.indexOf('post') != -1)
       originalClass = 'post';
+    else if(classes.indexOf('event') != -1)
+      originalClass = 'event';
 
     selectedGrids[0].setAttribute('class', originalClass);
 
@@ -148,52 +150,57 @@ function dropped(e){
 
   e.preventDefault();
 
-  console.log('Dropped: ' + currentEvent + ' onto ' +
-      e.target.getAttribute('id'));
+  var targetId = e.target.getAttribute('id');
+  console.log('Dropped: ' + currentEvent + ' onto ' + targetId);
 
-  var eventGrid = document.getElementById('editor');
-  var clonedEvent = createEventDiv(currentEvent);
-  var spacers = true;
+  //Make sure you don't drag onto self
+  if(currentEvent != targetId && targetId != null){
 
-  if(e.target.getAttribute('id') == 'start'){
+    var eventGrid = document.getElementById('editor');
+    var clonedEvent = createEventDiv(currentEvent);
+    var spacers = true;
 
-    //Insert After Start
-    var afterThis = document.getElementById('start');
-    eventGrid.insertBefore(clonedEvent, afterThis.nextSibling);
+    if(e.target.getAttribute('id') == 'start'){
 
-  }else if(e.target.getAttribute('id') == 'end'){
+      //Insert After Start
+      var afterThis = document.getElementById('start');
+      eventGrid.insertBefore(clonedEvent, afterThis.nextSibling);
 
-    //Insert Before End
-    var beforeThis = document.getElementById('end');
-    eventGrid.insertBefore(clonedEvent, beforeThis);
+    }else if(e.target.getAttribute('id') == 'end'){
 
-  }else if(e.target.getAttribute('id') == 'post'){
+      //Insert Before End
+      var beforeThis = document.getElementById('end');
+      eventGrid.insertBefore(clonedEvent, beforeThis);
 
-    //We want to dop after the parent element of this
-    var parentEvent = e.target.getAttribute('parent');
-    parentEvent = document.getElementById(parentEvent);
+    }else if(e.target.getAttribute('id') == 'post'){
 
-    eventGrid.insertBefore(clonedEvent, parentEvent.nextSibling
-        .nextSibling);//2nextSibs to skip over post target
+      //We want to dop after the parent element of this
+      var parentEvent = e.target.getAttribute('parent');
+      parentEvent = document.getElementById(parentEvent);
 
-  }else{
+      eventGrid.insertBefore(clonedEvent, parentEvent.nextSibling
+          .nextSibling);//2nextSibs to skip over post target
 
-    //Replace existing element
-    console.log('Replace element');
-    //Change post div to new parent id
-    e.target.parentNode.replaceChild(clonedEvent, e.target);
-    clonedEvent.nextSibling.parentNode.removeChild(clonedEvent.nextSibling);
+    }else{
+
+      //Replace existing element
+      console.log('Replace element');
+      //Change post div to new parent id
+      e.target.parentNode.replaceChild(clonedEvent, e.target);
+      clonedEvent.nextSibling.parentNode.removeChild(clonedEvent.nextSibling);
+
+    }
+
+    //Create spacers for insertion/moving divs
+    if(spacers)
+      createSpacers(clonedEvent);
+
+    addDraggableListeners(clonedEvent);
+    addDragAndDropListeners(clonedEvent);
+
+    validDrop = true;
 
   }
-
-  //Create spacers for insertion/moving divs
-  if(spacers)
-    createSpacers(clonedEvent);
-
-  addDraggableListeners(clonedEvent);
-  addDragAndDropListeners(clonedEvent);
-
-  validDrop = true;
 
 }
 
