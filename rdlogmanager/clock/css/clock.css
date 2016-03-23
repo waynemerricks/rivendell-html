@@ -295,3 +295,18 @@ div.event.selected > div {
   pointer-events: none;
 
 }
+
+input.labelOnly {
+
+  height: 12px;
+  width: 80%;
+  padding: 8px;
+  border: 0px solid black;
+  background: none;
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-size: 12px;
+
+  -moz-user-select: none;
+
+}

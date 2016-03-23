@@ -117,7 +117,6 @@
           <input id="clockTimeLeft" name="clockTimeLeft" type="text" maxlength="5" value="60:00">
           <div class="clear"></div>
           <div class="bookends" id="start"><p>Add Events to Start</p></div>
-          <div class="bookends" id="end"><p>Add Events to End</p></div>
         </div>
 <?php
 

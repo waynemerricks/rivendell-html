@@ -12,11 +12,17 @@ function onLoaded(){
     addDraggableListeners(events[i]);
 
   /*** Start / Stop Targets ***/
-  var targets = [ document.getElementById('start'),
-                  document.getElementById('end') ];
+  var targets = [ document.getElementById('start') ];
 
   for(i = 0; i < targets.length; i++)
     addDragAndDropListeners(targets[i]);
+
+  //Need to prevent Events being dropped onto the event pallette / themselves
+  var eventPallete = document.getElementById('events')
+        .getElementsByClassName('event');
+
+  for(i = 0; i < eventPallete.length; i++)
+    preventDefaultDnD(eventPallete[i]);
 
   //Need to track what targets we've entered and what clock is being dragged
   currentEvent = '';
@@ -166,12 +172,6 @@ function dropped(e){
       var afterThis = document.getElementById('start');
       eventGrid.insertBefore(clonedEvent, afterThis.nextSibling);
 
-    }else if(e.target.getAttribute('id') == 'end'){
-
-      //Insert Before End
-      var beforeThis = document.getElementById('end');
-      eventGrid.insertBefore(clonedEvent, beforeThis);
-
     }else if(e.target.getAttribute('id') == 'post'){
 
       //We want to dop after the parent element of this
@@ -289,6 +289,23 @@ function addDragAndDropListeners(element){
   element.addEventListener('dragenter', dragEnter, false);
   element.addEventListener('dragleave', dragLeave, false);
   element.addEventListener('drop', dropped, false);
+
+}
+
+/**
+ * Prevent dnd target events on given element
+ * @param element Adds a preventDefault listener to this element
+ */
+function preventDefaultDnD(element){
+
+  element.addEventListener('dragover',
+      function(e){e.preventDefault();}, false);
+  element.addEventListener('dragenter',
+      function(e){e.preventDefault();}, false);
+  element.addEventListener('dragleave',
+      function(e){e.preventDefault();}, false);
+  element.addEventListener('drop',
+      function(e){e.preventDefault();}, false);
 
 }
 
