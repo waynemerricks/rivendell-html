@@ -14,6 +14,8 @@
 
   if(isset($_POST['serviceName']) && $_POST['serviceName'] != 0)
     $selectedService = $_POST['serviceName'];
+  else if(isset($_GET['serviceName']))
+    $selectedService = $_GET['serviceName'];
 
   $title = 'Rivendell Clocks';
   $js = 'clock.js';
@@ -67,8 +69,13 @@
 
   foreach($clocks as $clock){
 
+    $url = './?name=' . $clock['NAME'];
+
+    if($selectedService != 0)
+      $url .= '&serviceName=' . $selectedService;
+
 ?>
-          <a href="./?name=<?php echo $clock['NAME']; ?>">
+          <a href="<?php echo $url; ?>">
           <div style="background: <?php echo $clock['COLOR']; ?>"
                id="<?php echo $clock['SHORT_NAME']; ?>" class="rivclock"
                ><?php echo $clock['SHORT_NAME']; ?></div>
