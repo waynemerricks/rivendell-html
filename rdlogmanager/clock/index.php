@@ -125,7 +125,34 @@
           <div class="clear"></div>
 <?php if(strlen($selectedClock) > 1){ ?>
           <div class="bookends" id="start"><p>Add Events to Start</p></div>
-<?php } ?>
+<?php
+
+    //Loop through this clocks events
+    $clockEvents = getClock($PDO, $clocks, $selectedClock);
+
+    $i = 1;
+
+    foreach($clockEvents as $event){
+
+      $divId = '!JS!_-' . $i . '_' . $event['EVENT_NAME'];
+      $color = $events[$event['EVENT_NAME']]['COLOR'];
+      $properties = $events[$event['EVENT_NAME']]['PROPERTIES'];
+      $time = getDuration($event['LENGTH']);
+?>
+          <div id="<?php echo $divId; ?>" class="event" draggable="true" style="background: <?php echo $color; ?>">
+            <div class="eventName"><?php echo $event['EVENT_NAME']; ?></div>
+            <div class="eventProperties"><?php echo $properties; ?></div>
+            <div class="eventTime"><?php echo $time; ?></div>
+          </div>
+          <div id="post" class="post" parent="<?php echo $divId; ?>"></div>
+<?php
+
+      $i++;
+
+    }
+
+  }//End Selected Clock
+ ?>
         </div>
 <?php
 

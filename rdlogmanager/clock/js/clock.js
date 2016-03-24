@@ -408,7 +408,7 @@ function calculateTimeLeft(){
 
     }
 
-    if(strTime.length == 2){
+    if(strTime.length >= 2){
 
       millis += strTime[0] * 60000;
       millis += strTime[1] * 1000;
