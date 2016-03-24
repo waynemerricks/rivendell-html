@@ -7,7 +7,7 @@ body {
 
 #content {
 
-  min-width: 865px;
+  min-width: 890px;
   max-width: 1024px;
   overflow: auto;
 
@@ -107,7 +107,7 @@ h2 {
 /* Editor */
 #editor {
 
-  max-width: 440px;
+  min-width: 460px;
   height: 85vh;
   overflow: auto;
   float: left;
@@ -135,7 +135,7 @@ h2 {
   float: left;
   clear: right;
   height: 1em;
-  width: 300px;
+  width: 240px;
 
 }
 
