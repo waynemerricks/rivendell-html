@@ -21,8 +21,14 @@ function onLoaded(){
   var eventPallete = document.getElementById('events')
         .getElementsByClassName('event');
 
-  for(i = 0; i < eventPallete.length; i++)
+  for(i = 0; i < eventPallete.length; i++){
+
     preventDefaultDnD(eventPallete[i]);
+
+    //While we're here add a mouseclick listener to event time
+    addMouseClickListener(eventPallete[i]);
+
+  }
 
   //Need to track what targets we've entered and what clock is being dragged
   currentEvent = '';
@@ -150,6 +156,42 @@ function dragLeave(e){
 }
 
 /**
+ * Helper function to test for all known bad drop target
+ * conditions:
+ * - Dropping onto self
+ * - Dropping onto my own post div
+ * - Dropping onto null (sometimes have weirdness)
+ * @param currentDraggedId The id of the div we're dragging
+ * @param dropTarget HTMLElement representing the drop target
+ * @return true if we can drop here
+ */
+function canDropHere(currentDraggedId, dropTarget){
+
+  var canDrop = true;
+  var targetId = dropTarget.getAttribute('id');
+
+  if(currentDraggedId == targetId)
+    canDrop = false;
+
+  if(targetId == null)
+    canDrop = false;
+
+  if(dropTarget.getAttribute('id') == 'post'){
+
+    var sib = dropTarget.previousSibling;
+
+    if(sib.getAttribute('id') == currentDraggedId)
+      canDrop = false;
+
+  }
+
+  console.log('Can Drop: ' + canDrop);
+  return canDrop;
+
+}
+
+
+/**
  * Called when events are dropped
  */
 function dropped(e){
@@ -160,7 +202,7 @@ function dropped(e){
   console.log('Dropped: ' + currentEvent + ' onto ' + targetId);
 
   //Make sure you don't drag onto self
-  if(currentEvent != targetId && targetId != null){
+  if(canDropHere(currentEvent, e.target)){
 
     var eventGrid = document.getElementById('editor');
     var clonedEvent = createEventDiv(currentEvent);
@@ -226,6 +268,12 @@ function createEventDiv(eventName){
     event.setAttribute('id', id);
     eventNumber++;
 
+    //Add the mouse click listener back to the eventTime element
+    var times = event.getElementsByClassName('eventTime');
+
+    for(i = 0; i < times.length; i++)
+      addMouseClickListener(times[i]);
+
   }else{
 
     //Already have JS so this is a move not clone
@@ -274,6 +322,16 @@ function addDraggableListeners(element){
 
     element.addEventListener('dragstart', dragStart, false);
     element.addEventListener('dragend', dragStopped, false);
+
+}
+
+/**
+ * Add mouse click listener to element
+ * @param element to listen for clicks
+ */
+function addMouseClickListener(element){
+
+  element.addEventListener('click', durationClicked, false);
 
 }
 
@@ -393,6 +451,84 @@ function calculateTimeLeft(){
   timeLeft.style.background = color;
 
   console.log(minutes + ':' + seconds + '.' + tenths);
+
+}
+
+/**
+ * Called by mouse click listener on event times
+ */
+function durationClicked(e){
+
+  var duration = e.target.innerHTML;
+  var events = document.getElementById('events');
+  var name = e.target.parentElement.getAttribute('id');
+
+  if(name.indexOf('!JS!') == 0){
+
+    name = name.substring(5);//remove !JS!_
+    name = name.substring(name.indexOf('_') + 1);
+
+  }
+
+  duration = changeDuration(name, duration);
+
+  e.target.innerHTML = duration;
+
+  calculateTimeLeft();
+
+}
+
+/**
+ * Called when time is clicked on event
+ * @param name to display for event
+ * @duration current duration of event
+ */
+function changeDuration(name, duration){
+
+  var newDuration = prompt('Change duration for ' + name + '(MM:SS.s)',
+        duration);
+
+  //Validate new duration
+  var temp = newDuration.split(':');
+
+  if(temp.length == 2 && checkTimeRange(temp[0])){ //MM OK
+
+    if(temp[1].indexOf('.') == -1){//No tenths
+
+      if(checkTimeRange(temp[1]))
+        temp = true;
+
+    }else{//Yes tenths
+
+      var secTemp = temp[1].split('.');
+
+      if(secTemp.length == 2){
+
+        if(checkTimeRange(secTemp[0]) && secTemp[1] >= 0 && secTemp[1] <= 9)
+          temp = true;
+
+      }
+
+    }
+
+  }
+
+  if(temp != true)
+    newDuration = duration;//Revert to old value
+
+  return newDuration;
+
+}
+
+//Simple 0 to 59 check
+function checkTimeRange(value){
+
+  var valid = false;
+
+  if(value >= 0 && value <= 59)
+    valid = true;
+
+  return valid;
 
 }
 
