@@ -116,7 +116,9 @@
           <label for="clockTimeLeft">Time Left:</label>
           <input id="clockTimeLeft" name="clockTimeLeft" type="text" maxlength="5" value="60:00">
           <div class="clear"></div>
+<?php if(strlen($selectedClock) > 1){ ?>
           <div class="bookends" id="start"><p>Add Events to Start</p></div>
+<?php } ?>
         </div>
 <?php
 
