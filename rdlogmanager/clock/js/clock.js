@@ -4,6 +4,7 @@
 function onLoaded(){
 
   /*** Event Palette ***/
+  console.log('Loaded');
 
   //Get all Rivendell Event elements and add drag listeners
   var events = document.getElementsByClassName('event');
@@ -11,8 +12,23 @@ function onLoaded(){
   for(i = 0; i < events.length; i++)
     addDraggableListeners(events[i]);
 
-  /*** Start / Stop Targets ***/
-  var targets = [ document.getElementById('start') ];
+  /*** Drop Targets ***/
+  addDragAndDropListeners(document.getElementById('start'));
+  var targets = document.getElementById('editor')
+        .getElementsByClassName('event');
+
+  for(i = 0; i < targets.length; i++)
+    addDragAndDropListeners(targets[i]);
+
+  var timeElements = document.getElementById('editor')
+        .getElementsByClassName('eventTime');
+
+  for(i = 0; i < timeElements.length; i++)
+    addMouseClickListener(timeElements[i]);
+
+  //Add to post divs too
+  var targets = document.getElementById('editor')
+        .getElementsByClassName('post');
 
   for(i = 0; i < targets.length; i++)
     addDragAndDropListeners(targets[i]);
@@ -21,20 +37,23 @@ function onLoaded(){
   var eventPallete = document.getElementById('events')
         .getElementsByClassName('event');
 
-  for(i = 0; i < eventPallete.length; i++){
-
+  for(i = 0; i < eventPallete.length; i++)
     preventDefaultDnD(eventPallete[i]);
 
-    //While we're here add a mouseclick listener to event time
-    addMouseClickListener(eventPallete[i]);
+  //Add mouse listener to pallete eventTime labels
+  var eventPalleteTimes = document.getElementById('events')
+        .getElementsByClassName('eventTime');
 
-  }
+  for(i = 0; i < eventPalleteTimes.length; i++)
+    addMouseClickListener(eventPalleteTimes[i]);
 
   //Need to track what targets we've entered and what clock is being dragged
   currentEvent = '';
   validDrop = false;//Flag to test for dnd cancel
   currentEvents = 0; //counter for events in this clock
   eventNumber = 0;
+
+  calculateTimeLeft();
 
 }
 
@@ -178,7 +197,7 @@ function canDropHere(currentDraggedId, dropTarget){
 
   if(dropTarget.getAttribute('id') == 'post'){
 
-    var sib = dropTarget.previousSibling;
+    var sib = dropTarget.previousElementSibling;
 
     if(sib.getAttribute('id') == currentDraggedId)
       canDrop = false;
@@ -212,7 +231,7 @@ function dropped(e){
 
       //Insert After Start
       var afterThis = document.getElementById('start');
-      eventGrid.insertBefore(clonedEvent, afterThis.nextSibling);
+      eventGrid.insertBefore(clonedEvent, afterThis.nextElementSibling);
 
     }else if(e.target.getAttribute('id') == 'post'){
 
@@ -220,8 +239,8 @@ function dropped(e){
       var parentEvent = e.target.getAttribute('parent');
       parentEvent = document.getElementById(parentEvent);
 
-      eventGrid.insertBefore(clonedEvent, parentEvent.nextSibling
-          .nextSibling);//2nextSibs to skip over post target
+      eventGrid.insertBefore(clonedEvent, parentEvent.nextElementSibling
+          .nextElementSibling);//2nextSibs to skip over post target
 
     }else{
 
@@ -229,7 +248,8 @@ function dropped(e){
       console.log('Replace element');
       //Change post div to new parent id
       e.target.parentNode.replaceChild(clonedEvent, e.target);
-      clonedEvent.nextSibling.parentNode.removeChild(clonedEvent.nextSibling);
+      clonedEvent.nextElementSibling.parentNode.removeChild(
+          clonedEvent.nextElementSibling);
 
     }
 
@@ -280,7 +300,7 @@ function createEventDiv(eventName){
     console.log('Moving: ' + eventName);
 
     //Need to remove trailing post div
-    var removePostDiv = event.nextSibling;
+    var removePostDiv = event.nextElementSibling;
 
     console.log('Removing Post: ' + removePostDiv.getAttribute('parent'));
     removePostDiv.parentNode.removeChild(removePostDiv);
@@ -308,7 +328,7 @@ function createSpacers(eventDiv){
   post.setAttribute('class', 'post');
   post.setAttribute('parent', eventDiv.getAttribute('id'));
 
-  eventGrid.insertBefore(post, eventDiv.nextSibling);
+  eventGrid.insertBefore(post, eventDiv.nextElementSibling);
 
   addDragAndDropListeners(post);
 
@@ -421,7 +441,6 @@ function calculateTimeLeft(){
   }//End time For
 
   millis = 3600000 - millis;
-  console.log('Millis Remaining: ' + millis);
 
   var color = 'white';
 
@@ -434,10 +453,15 @@ function calculateTimeLeft(){
   if(millis < 0)
     color = 'red';
 
-  var minutes = Math.floor(millis/60000);
+  var minutes = '' + Math.floor(millis/60000);
   millis = millis % 60000;
 
+  while(minutes.length < 2)
+    minutes = '0' + minutes;
+
   var seconds = '' + Math.floor(millis/1000);
+  if(seconds < 0)
+    seconds = seconds * -1;
 
   while(seconds.length < 2)
     seconds = '0' + seconds;
@@ -445,6 +469,9 @@ function calculateTimeLeft(){
   millis = millis % 1000;
 
   var tenths = Math.floor(millis/100);
+
+  if(tenths < 0)
+    tenths = tenths * -1;
 
   var timeLeft = document.getElementById('clockTimeLeft');
   timeLeft.value = minutes + ':' + seconds + '.' + tenths;
@@ -488,24 +515,28 @@ function changeDuration(name, duration){
   var newDuration = prompt('Change duration for ' + name + '(MM:SS.s)',
         duration);
 
-  //Validate new duration
-  var temp = newDuration.split(':');
+  if(newDuration != null){
 
-  if(temp.length == 2 && checkTimeRange(temp[0])){ //MM OK
+    //Validate new duration
+    var temp = newDuration.split(':');
 
-    if(temp[1].indexOf('.') == -1){//No tenths
+    if(temp.length == 2 && checkTimeRange(temp[0])){ //MM OK
 
-      if(checkTimeRange(temp[1]))
-        temp = true;
+      if(temp[1].indexOf('.') == -1){//No tenths
 
-    }else{//Yes tenths
-
-      var secTemp = temp[1].split('.');
-
-      if(secTemp.length == 2){
-
-        if(checkTimeRange(secTemp[0]) && secTemp[1] >= 0 && secTemp[1] <= 9)
+        if(checkTimeRange(temp[1]))
           temp = true;
+
+      }else{//Yes tenths
+
+        var secTemp = temp[1].split('.');
+
+        if(secTemp.length == 2){
+
+          if(checkTimeRange(secTemp[0]) && secTemp[1] >= 0 && secTemp[1] <= 9)
+            temp = true;
+
+        }
 
       }
 
@@ -513,7 +544,7 @@ function changeDuration(name, duration){
 
   }
 
-  if(temp != true)
+  if(temp == null || temp != true)
     newDuration = duration;//Revert to old value
 
   return newDuration;
