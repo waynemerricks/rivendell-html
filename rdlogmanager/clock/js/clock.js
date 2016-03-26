@@ -223,46 +223,73 @@ function dropped(e){
   //Make sure you don't drag onto self
   if(canDropHere(currentEvent, e.target)){
 
-    var eventGrid = document.getElementById('editor');
-    var clonedEvent = createEventDiv(currentEvent);
-    var spacers = true;
+    if(!isDelete(targetId)){
 
-    if(e.target.getAttribute('id') == 'start'){
+      var eventGrid = document.getElementById('editor');
+      var clonedEvent = createEventDiv(currentEvent);
+      var spacers = true;
 
-      //Insert After Start
-      var afterThis = document.getElementById('start');
-      eventGrid.insertBefore(clonedEvent, afterThis.nextElementSibling);
+      if(e.target.getAttribute('id') == 'start'){
 
-    }else if(e.target.getAttribute('id') == 'post'){
+        //Insert After Start
+        var afterThis = document.getElementById('start');
+        eventGrid.insertBefore(clonedEvent, afterThis.nextElementSibling);
 
-      //We want to dop after the parent element of this
-      var parentEvent = e.target.getAttribute('parent');
-      parentEvent = document.getElementById(parentEvent);
+      }else if(e.target.getAttribute('id') == 'post'){
 
-      eventGrid.insertBefore(clonedEvent, parentEvent.nextElementSibling
-          .nextElementSibling);//2nextSibs to skip over post target
+        //We want to dop after the parent element of this
+        var parentEvent = e.target.getAttribute('parent');
+        parentEvent = document.getElementById(parentEvent);
 
-    }else{
+        eventGrid.insertBefore(clonedEvent, parentEvent.nextElementSibling
+            .nextElementSibling);//2nextSibs to skip over post target
 
-      //Replace existing element
-      console.log('Replace element');
-      //Change post div to new parent id
-      e.target.parentNode.replaceChild(clonedEvent, e.target);
-      clonedEvent.nextElementSibling.parentNode.removeChild(
-          clonedEvent.nextElementSibling);
+      }else{
+
+        //Replace existing element
+        console.log('Replace element');
+        //Change post div to new parent id
+        e.target.parentNode.replaceChild(clonedEvent, e.target);
+        clonedEvent.nextElementSibling.parentNode.removeChild(
+            clonedEvent.nextElementSibling);
+
+      }
+
+      //Create spacers for insertion/moving divs
+      if(spacers)
+        createSpacers(clonedEvent);
+
+      addDraggableListeners(clonedEvent);
+      addDragAndDropListeners(clonedEvent);
+
+      validDrop = true;
+
+    }else{//End !isDelete
+
+      //Delete this element and its post div
+      var deleteMe = e.target;
+      var postDiv = deleteMe.nextElementSibling;
+      deleteMe.parentNode.removeChild(deleteMe);
+      postDiv.parentNode.removeChild(postDiv);
 
     }
 
-    //Create spacers for insertion/moving divs
-    if(spacers)
-      createSpacers(clonedEvent);
+  }//End Can Drop Here
 
-    addDraggableListeners(clonedEvent);
-    addDragAndDropListeners(clonedEvent);
+}
 
-    validDrop = true;
+/**
+ * Checks if the dragged event is the delete clock event
+ * @return true if this is a delete event
+ */
+function isDelete(){
 
-  }
+  var deleteEvent = false;
+
+  if(currentEvent == 'Delete Event')
+    deleteEvent = true;
+
+  return deleteEvent;
 
 }
 

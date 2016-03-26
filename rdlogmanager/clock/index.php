@@ -89,9 +89,17 @@
         </div>
         <div id="events">
           <h2>Events</h2>
+
 <?php
 
   $events = getRivendellEvents($PDO, $serviceNames[$selectedService]);
+
+  $deleteEvent = array();
+  $deleteEvent['NAME'] = 'Delete Event';
+  $deleteEvent['COLOR'] = 'lightgrey';
+  $deleteEvent['PROPERTIES'] = '';
+
+  array_unshift($events, $deleteEvent);
 
   foreach($events as $event){
 ?>
