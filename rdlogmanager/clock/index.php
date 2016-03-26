@@ -61,6 +61,16 @@
 
   $clocks = getRivendellClocks($PDO, $serviceNames[$selectedService]);
 
+  //Add a "new/add" clock button
+  $addClock = array();
+  $addClock['NAME'] = 'Add New Clock';
+  $addClock['COLOR'] = 'lightgreen';
+  $addClock['SHORT_NAME'] = 'ADD';
+
+  $clocks = array_reverse($clocks, true);
+  $clocks['Add New Clock'] = $addClock;
+  $clocks = array_reverse($clocks, true);
+
   //Check GET for clock references
   $selectedClock = '';
 
@@ -118,6 +128,8 @@
 <?php
     if(strlen($selectedClock) < 1)
       echo '&larr; Select Clock';
+    else if($selectedClock == 'Add New Clock')
+      echo 'Adding New Clock';
     else
       echo 'Editing ' . $selectedClock;
 ?>
@@ -136,16 +148,18 @@
 <?php
 
     //Loop through this clocks events
-    $clockEvents = getClock($PDO, $clocks, $selectedClock);
+    if($selectedClock != 'Add New Clock'){
 
-    $i = 1;
+      $clockEvents = getClock($PDO, $clocks, $selectedClock);
 
-    foreach($clockEvents as $event){
+      $i = 1;
 
-      $divId = '!JS!_-' . $i . '_' . $event['EVENT_NAME'];
-      $color = $events[$event['EVENT_NAME']]['COLOR'];
-      $properties = $events[$event['EVENT_NAME']]['PROPERTIES'];
-      $time = getDuration($event['LENGTH']);
+      foreach($clockEvents as $event){
+
+        $divId = '!JS!_-' . $i . '_' . $event['EVENT_NAME'];
+        $color = $events[$event['EVENT_NAME']]['COLOR'];
+        $properties = $events[$event['EVENT_NAME']]['PROPERTIES'];
+        $time = getDuration($event['LENGTH']);
 ?>
           <div id="<?php echo $divId; ?>" class="event" draggable="true" style="background: <?php echo $color; ?>">
             <div class="eventName"><?php echo $event['EVENT_NAME']; ?></div>
@@ -155,9 +169,11 @@
           <div id="post" class="post" parent="<?php echo $divId; ?>"></div>
 <?php
 
-      $i++;
+        $i++;
 
-    }
+      }//End For Each
+
+    }//End add new clock
 
   }//End Selected Clock
  ?>

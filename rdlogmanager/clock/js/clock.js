@@ -204,6 +204,10 @@ function canDropHere(currentDraggedId, dropTarget){
 
   }
 
+  if(currentDraggedId == 'Delete Event'
+        && dropTarget.getAttribute('id') == 'start')
+    canDrop = false;
+
   console.log('Can Drop: ' + canDrop);
   return canDrop;
 
@@ -419,7 +423,23 @@ function preventDefaultDnD(element){
  */
 function emptyClock(){
 
-  //TODO
+  if(confirm('Clear all events from current clock?')){
+
+    var editor = document.getElementById('editor');
+
+    var temp = editor.getElementsByClassName('post');
+
+    while(temp.length > 0)
+      editor.removeChild(temp[0]);
+
+    temp = editor.getElementsByClassName('event');
+
+    while(temp.length > 0)
+      editor.removeChild(temp[0]);
+
+    calculateTimeLeft();
+
+  }
 
 }
 
