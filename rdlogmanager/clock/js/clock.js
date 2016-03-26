@@ -419,6 +419,35 @@ function preventDefaultDnD(element){
 }
 
 /**
+ * Called when delete clock is clicked
+ */
+function deleteClock(){
+
+  var clock = document.getElementsByName('originalName');
+
+  if(clock[0].value == 'Add New Clock')
+    alert('Can\'t delete this clock');//You were trying to add one
+  else if(confirm('Delete current clock from database?')){
+
+    var deleteMe = jQuery.post('deleteClock.php', { name: clock[0].value })
+        .done(function(data){
+
+          alert(data);
+
+        })
+        .fail(function(XMLHttpRequest, textStatus, errorThrown){
+
+          alert('Failed to delete Clock(' + XMLHttpRequest.status + ') '
+              + XMLHttpRequest.statusText);
+          console.log(XMLHttpRequest);
+
+        });
+
+  }
+
+}
+
+/**
  * Called when clear clock is clicked
  */
 function emptyClock(){
@@ -448,7 +477,74 @@ function emptyClock(){
  */
 function saveClock(){
 
-  //TODO
+  if(confirm('Save this clock to database?')){
+
+    //TODO
+    
+
+
+  }
+
+}
+
+/**
+ * Checks for timed events and alters the property to show the time
+ * @param element eventTime element
+ * @param millis current millis at this point in the clock
+ */
+function displayHardTime(element, millis){
+
+  var propertyElement = element.previousElementSibling;
+
+  if(propertyElement.innerHTML.indexOf('Timed') != -1){
+
+    if(propertyElement.innerHTML.length > 10
+        && propertyElement.innerHTML.indexOf('[T') == 0){
+
+      /* Already have a timed event, need to remove this
+       * before recalculating. */
+      propertyElement.innerHTML = propertyElement.innerHTML.substring(12);
+
+    }
+
+    //This is a timed event
+    propertyElement.innerHTML = '[T ' + getTimeFromMillis(millis) + '] '
+        + propertyElement.innerHTML;
+    propertyElement.style.color = 'blue';
+    propertyElement.style.fontWeight = 'bold';
+
+  }
+
+}
+
+/**
+ * Converts the given millis to MM:SS.s
+ * @param millis milliseconds to convert
+ * @return millis converted into MM:SS.s
+ */
+function getTimeFromMillis(millis){
+
+  var minutes = '' + Math.floor(millis/60000);
+  millis = millis % 60000;
+
+  while(minutes.length < 2)
+    minutes = '0' + minutes;
+
+  var seconds = '' + Math.floor(millis/1000);
+  if(seconds < 0)
+    seconds = seconds * -1;
+
+  while(seconds.length < 2)
+    seconds = '0' + seconds;
+
+  millis = millis % 1000;
+
+  var tenths = Math.floor(millis/100);
+
+  if(tenths < 0)
+    tenths = tenths * -1;
+
+  return minutes + ':' + seconds + '.' + tenths;
 
 }
 
@@ -462,6 +558,8 @@ function calculateTimeLeft(){
   var millis = 0;
 
   for(i = 0; i < times.length; i++){
+
+    displayHardTime(times[i], millis);//Display [T HH:MM] if timed event
 
     var strTime = times[i].innerHTML;
     strTime = strTime.split(':');
@@ -489,42 +587,22 @@ function calculateTimeLeft(){
 
   millis = 3600000 - millis;
 
-  var color = 'white';
+  var tlClass = 'normal';//white
 
   if(millis < 300000)
-    color = 'yellow';
+    tlClass = 'nearlyFull';//yellow
 
   if(millis == 0)
-    color = 'green';
+    tlClass = 'full';//green
 
   if(millis < 0)
-    color = 'red';
-
-  var minutes = '' + Math.floor(millis/60000);
-  millis = millis % 60000;
-
-  while(minutes.length < 2)
-    minutes = '0' + minutes;
-
-  var seconds = '' + Math.floor(millis/1000);
-  if(seconds < 0)
-    seconds = seconds * -1;
-
-  while(seconds.length < 2)
-    seconds = '0' + seconds;
-
-  millis = millis % 1000;
-
-  var tenths = Math.floor(millis/100);
-
-  if(tenths < 0)
-    tenths = tenths * -1;
+    tlClass = 'overLimit';//red
 
   var timeLeft = document.getElementById('clockTimeLeft');
-  timeLeft.value = minutes + ':' + seconds + '.' + tenths;
-  timeLeft.style.background = color;
+  timeLeft.value = getTimeFromMillis(millis);
+  timeLeft.setAttribute('class', tlClass);
 
-  console.log(minutes + ':' + seconds + '.' + tenths);
+  console.log(timeLeft.value);
 
 }
 

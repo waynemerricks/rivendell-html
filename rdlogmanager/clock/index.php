@@ -49,8 +49,10 @@
             </label>
             <input type="submit" value="Change Service">
             <div id="gridform">
-              <button class="red" type="button" onClick="emptyClock()">Clear</button>
-              <button class="green" type="button" onClick="saveClock()">Save</button>
+              <button class="delete" type="button" onClick="deleteClock()">Delete</button>
+              <button class="empty" type="button" onClick="emptyClock()">Clear</button>
+              <button class="save" type="button" onClick="saveClock()">Save</button>
+              <button class="saveas" type="button" onClick="saveAsClock()">Save As</button>
            </div>
           </form>
         </div>
