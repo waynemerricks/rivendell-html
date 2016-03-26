@@ -479,11 +479,64 @@ function saveClock(){
 
   if(confirm('Save this clock to database?')){
 
-    //TODO
-    
+    if(document.getElementById('clockTimeLeft').getAttribute('class')
+          .indexOf('overLimit') != -1){
 
+      //Clock is too full alert user
+      alert('Clock is over filled, please reduce content to 60minutes or less');
 
-  }
+    }else{//Clock not over filled
+
+      //We can try to save this
+      //Get array of events [EVENT_NAME, START_TIME, LENGTH]
+      var saveEvents = document.getElementById('editor')
+            .getElementsByClassName('event');
+
+      var timeMillis = 0;
+      var saveMe = [];
+
+      for(i = 0; i < saveEvents.length; i++){
+
+        var event = [];
+        event.push(saveEvents[i].children[0].innerHTML);//EVENT_NAME
+        event.push(timeMillis);//START_TIME
+        var eventMillis = getMillisFromTime(saveEvents[i].children[2]
+              .innerHTML);
+        event.push(eventMillis);//LENGTH
+        timeMillis += eventMillis; //next event START_TIME
+
+        saveMe.push(event);
+
+      }//End for saveEvents
+
+      var name = document.getElementById('clockName').value;
+      var originalName = document.getElementById('originalName').value;
+      var shortName = document.getElementById('clockShortName').value;
+      var originalShortName = document.getElementById('originalShortName')
+            .value;
+
+      //Post it
+      var save = jQuery.post('saveClock.php', { name: name,
+            shortName: shortName,
+            originalName: originalName,
+            originalShortName: originalShortName,
+            events: saveMe })
+        .done(function(data){
+
+          alert(data);
+
+        })
+        .fail(function(XMLHttpRequest, textStatus, errorThrown){
+
+          alert('Failed to save Clock (' + XMLHttpRequest.status + ') '
+              + XMLHttpRequest.statusText);
+          console.log(XMLHttpRequest);
+
+        });
+
+    }//End if clock over filled
+
+  }//End If Confirm save
 
 }
 
@@ -549,6 +602,39 @@ function getTimeFromMillis(millis){
 }
 
 /**
+ * Parses time MM:SS.s into millis
+ * @param time time to parse
+ * @return millis
+ */
+function getMillisFromTime(time){
+
+    time = time.split(':');
+    var millis = 0;
+
+    if(time.length == 2 && time[1].indexOf('.') != -1){
+
+      var temp = time[1].split('.');
+
+      time[1] = temp[0];
+      time.push(temp[1]);
+
+    }
+
+    if(time.length >= 2){
+
+      millis += time[0] * 60000;
+      millis += time[1] * 1000;
+
+    }
+
+    if(time.length == 3)
+      millis += time[2] * 100;
+
+    return millis;
+
+}
+
+/**
  * Called to calculate how much time is left in this clock
  */
 function calculateTimeLeft(){
@@ -560,28 +646,7 @@ function calculateTimeLeft(){
   for(i = 0; i < times.length; i++){
 
     displayHardTime(times[i], millis);//Display [T HH:MM] if timed event
-
-    var strTime = times[i].innerHTML;
-    strTime = strTime.split(':');
-
-    if(strTime.length == 2 && strTime[1].indexOf('.') != -1){
-
-      var temp = strTime[1].split('.');
-
-      strTime[1] = temp[0];
-      strTime.push(temp[1]);
-
-    }
-
-    if(strTime.length >= 2){
-
-      millis += strTime[0] * 60000;
-      millis += strTime[1] * 1000;
-
-    }
-
-    if(strTime.length == 3)
-      millis += strTime[2] * 100;
+    millis += getMillisFromTime(times[i].innerHTML);
 
   }//End time For
 

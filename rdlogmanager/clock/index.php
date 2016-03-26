@@ -136,12 +136,12 @@
       echo 'Editing ' . $selectedClock;
 ?>
           </h2>
-          <input name="originalName" type="hidden" value="<?php echo $selectedClock; ?>">
-          <input name="originalShortName" type="hidden" value="<?php echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
+          <input id="originalName" name="originalName" type="hidden" value="<?php echo $selectedClock; ?>">
+          <input id="originalShortName" name="originalShortName" type="hidden" value="<?php echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
           <label for="clockName">Clock Name:</label>
-          <input name="clockName" type="text" maxlength="58" value="<?php echo $selectedClock; ?>">
+          <input id="clockName" name="clockName" type="text" maxlength="58" value="<?php echo $selectedClock; ?>">
           <label for="clockShortName">Clock Code:</label>
-          <input name="clockShortName" type="text" maxlength="3" value="<?php echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
+          <input id="clockShortName" name="clockShortName" type="text" maxlength="3" value="<?php echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
           <label for="clockTimeLeft">Time Left:</label>
           <input id="clockTimeLeft" name="clockTimeLeft" type="text" maxlength="5" value="60:00">
           <div class="clear"></div>
