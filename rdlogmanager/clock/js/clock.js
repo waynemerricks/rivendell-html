@@ -473,11 +473,25 @@ function emptyClock(){
 }
 
 /**
- * Called when save clock is clicked
+ * Called when Save as is clicked
+ * Will save the current clock under a new name given by the clockName and code
+ * currently in the editor form
  */
-function saveClock(){
+function saveAsClock(){
 
-  if(confirm('Save this clock to database?')){
+  if(confirm('Save this clock under new name?')){
+
+    save('saveas');
+
+  }
+
+}
+
+/**
+ * Called by as part of saveClock or saveAsClock
+ * @param mode: save, saveas
+ */
+function save(mode){
 
     if(document.getElementById('clockTimeLeft').getAttribute('class')
           .indexOf('overLimit') != -1){
@@ -520,6 +534,7 @@ function saveClock(){
             shortName: shortName,
             originalName: originalName,
             originalShortName: originalShortName,
+            mode: mode,
             events: saveMe })
         .done(function(data){
 
@@ -535,6 +550,17 @@ function saveClock(){
         });
 
     }//End if clock over filled
+
+}
+
+/**
+ * Called when save clock is clicked
+ */
+function saveClock(){
+
+  if(confirm('Save this clock to database?')){
+
+    save('save');
 
   }//End If Confirm save
 
