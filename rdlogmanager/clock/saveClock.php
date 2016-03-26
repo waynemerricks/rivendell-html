@@ -5,7 +5,12 @@
 
     var_dump($_POST);
 
-    if($_POST['mode'] == 'save'){
+    if($_POST['originalName'] == ''){
+      echo 'SAVE NEW CLOCK';
+      //CHECK NAME EXISTS (IT SHOULDN'T)
+      //CREATE NEW TABLE (CLOCK + RULES)
+      //SAVE EVENTS TO NEW TABLE
+    }else if($_POST['mode'] == 'save'){
 
       if($_POST['originalName'] != $_POST['name']){
         echo 'RENAME';
