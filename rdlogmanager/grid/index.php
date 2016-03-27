@@ -16,7 +16,7 @@
     $selectedService = $_POST['serviceName'];
 
   $title = 'Rivendell Grid';
-  $js = 'grid.js';
+  $js = ['grid.js'];
   $css = 'grid.css';
 
   include('../../template/header.php');//Header HTML
