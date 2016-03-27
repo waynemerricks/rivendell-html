@@ -528,7 +528,7 @@ function save(mode){
       var shortName = document.getElementById('clockShortName').value;
       var originalShortName = document.getElementById('originalShortName')
             .value;
-      var colour = document.getElementById('clockColour');
+      var colour = document.getElementById('clockColour').value;
 
       //Post it
       var save = jQuery.post('saveClock.php', { name: name,
