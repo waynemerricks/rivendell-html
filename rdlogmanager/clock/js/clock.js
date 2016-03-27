@@ -528,12 +528,14 @@ function save(mode){
       var shortName = document.getElementById('clockShortName').value;
       var originalShortName = document.getElementById('originalShortName')
             .value;
+      var colour = document.getElementById('clockColour');
 
       //Post it
       var save = jQuery.post('saveClock.php', { name: name,
             shortName: shortName,
             originalName: originalName,
             originalShortName: originalShortName,
+            colour: colour,
             mode: mode,
             events: saveMe })
         .done(function(data){

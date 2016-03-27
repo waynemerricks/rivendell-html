@@ -18,7 +18,7 @@
     $selectedService = $_GET['serviceName'];
 
   $title = 'Rivendell Clocks';
-  $js = 'clock.js';
+  $js = ['clock.js', 'jscolor.min.js'];
   $css = 'clock.css';
 
   include('../../template/header.php');//Header HTML
@@ -66,7 +66,7 @@
   //Add a "new/add" clock button
   $addClock = array();
   $addClock['NAME'] = 'Add New Clock';
-  $addClock['COLOR'] = 'lightgreen';
+  $addClock['COLOR'] = '#8cec8c';
   $addClock['SHORT_NAME'] = 'ADD';
 
   $clocks = array_reverse($clocks, true);
@@ -134,6 +134,11 @@
       echo 'Adding New Clock';
     else
       echo 'Editing ' . $selectedClock;
+
+    $colour = '#CCCCCC';
+
+    if(isset($clocks[$selectedClock]['COLOR']))
+      $colour = $clocks[$selectedClock]['COLOR'];
 ?>
           </h2>
           <input id="originalName" name="originalName" type="hidden" value="<?php echo $selectedClock; ?>">
@@ -142,6 +147,8 @@
           <input id="clockName" name="clockName" type="text" maxlength="58" value="<?php echo $selectedClock; ?>">
           <label for="clockShortName">Clock Code:</label>
           <input id="clockShortName" name="clockShortName" type="text" maxlength="3" value="<?php echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
+          <label for="clockColour">Colour:</label>
+          <input id="clockColour" class="jscolor" name="clockColour" type="text" maxlength="7" value="<?php echo $colour; ?>">
           <label for="clockTimeLeft">Time Left:</label>
           <input id="clockTimeLeft" name="clockTimeLeft" type="text" maxlength="5" value="60:00">
           <div class="clear"></div>

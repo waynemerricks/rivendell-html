@@ -1,7 +1,7 @@
 <?php
 
   if(isset($_POST['name'], $_POST['shortName'], $_POST['originalName'],
-        $_POST[originalShortName'], $_POST['mode'], $_POST['events'])){
+        $_POST[originalShortName'], $_POST['mode'], $_POST['events'], $_POST['colour'])){
 
     var_dump($_POST);
 
