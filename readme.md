@@ -7,7 +7,11 @@ with HTML, Javascript and PHP.
 
 Tested with **Riv 2.10.3** (Tryphon Repos).  The service table was changed
 after this version to pull the CLOCKS into a SVC_CLOCKS table.  This won't
-work properly with newer versions.
+work properly with newer versions (2.11+).
+
+**Note:** Riv seems to have more changes incoming in the next release.  This
+includes a change from CLOCK TABLES to a CLOCKS_METADATA table containing all
+the clocks.
 
 ### What do you mean non-critical?
 
