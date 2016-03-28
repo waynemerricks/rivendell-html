@@ -52,6 +52,8 @@
     if($stmt->execute() === FALSE || $stmt->rowCount() != 1)
       die('Error inserting ' . $name . ' into CLOCKS table');
 
+    $stmt = NULL;
+
   }
 
   /**
@@ -213,9 +215,102 @@
 
   }
 
+  /**
+   * Renames a clocks CLK and RULES table
+   * @param $PDO PDO Connection to use
+   * @param $oldName Old/Current clock name
+   * @param $newName Name you want to rename to
+   * dies on error
+   */
+  function renameClockTables($PDO, $oldName, $newName){
+
+    //Rename _CLK
+    $oldTableName = str_replace(' ', '_', $oldName);
+    $newTableName = str_replace(' ', '_', $newName);
+    $oldTableName = escapeTableName($PDO, $oldTableName . '_CLK');
+    $newTableName = escapeTableName($PDO, $newTableName . '_CLK');
+    $sql = 'ALTER TABLE ' . $oldTableName . ' RENAME TO ' . $newTableName;
+
+    if($PDO->query($sql) === FALSE)
+      die('Error renaming clock table from ' . $oldName . ' to ' . $newName);
+
+    //Rename _RULES
+    $oldTableName = str_replace(' ', '_', $oldName);
+    $newTableName = str_replace(' ', '_', $newName);
+    $oldTableName = escapeTableName($PDO, $oldTableName . '_RULES');
+    $newTableName = escapeTableName($PDO, $newTableName . '_RULES');
+
+    $sql = 'ALTER TABLE ' . $oldTableName . ' RENAME TO ' . $newTableName;
+
+    if($PDO->query($sql) === FALSE)
+      die('Error renaming clock rules table from ' . $oldName . ' to ' . $newName);
+
+  }
+
+  /**
+   * Renames a given clock in the CLOCKS table
+   * @param $PDO PDO Connection to use
+   * @param $oldName Old/Current clock name
+   * @param $newName Name you want to rename to
+   * dies on error
+   */
   function renameClock($PDO, $oldName, $newName){
 
-    //TODO
+    $sql = 'UPDATE `CLOCKS` SET `NAME` = :newName WHERE `NAME` = :oldName';
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindParam(':newName', $newName);
+    $stmt->bindParam(':oldName', $oldName);
+
+    if($stmt->execute() === FALSE)
+      die('Error renaming clock in CLOCKS table: ' . $oldName . ' to ' . $newName);
+
+    $stmt = NULL;
+
+  }
+
+  /**
+   * Renames a given clock in the CLOCK_PERMS table
+   * @param $PDO PDO Connection to use
+   * @param $oldName Old/Current clock name
+   * @param $newName Name you want to rename to
+   * dies on error
+   */
+  function renameClockPerms($PDO, $oldName, $newName){
+
+    $sql = 'UPDATE `CLOCK_PERMS` SET `CLOCK_NAME` = :newName
+            WHERE `CLOCK_NAME` = :oldName';
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindParam(':newName', $newName);
+    $stmt->bindParam(':oldName', $oldName);
+
+    if($stmt->execute() === FALSE)
+      die('Error renaming clock in CLOCK_PERMS table: ' . $oldName . ' to ' . $newName);
+
+    $stmt = NULL;
+
+  }
+
+  function renameClockInGrids($PDO, $oldName, $newName){
+
+    /* Can only really brute force through all 167 clock columns
+     * changes coming in Riv github means this won't be an issue (CLOCK_SVC table)
+     * in newer versions than 2.10.3 */
+    for($i = 0; $i < 168; $i++){
+
+      $sql = 'UPDATE `SERVICES` SET `CLOCK' . $i . '` = :newName
+              WHERE `CLOCK' . $i . '` = :oldName';
+
+      $stmt = $PDO->prepare($sql);
+      $stmt->bindParam(':newName', $newName);
+      $stmt->bindParam(':oldName', $oldName);
+
+      if($stmt->execute() === FALSE)
+        die('Failed to rename SERVICE Table CLOCK' . $i . ' from ' . $oldName . ' to '
+            . $newName);
+
+      $stmt = NULL;
+
+    }//End Clocks For Loop
 
   }
 
@@ -242,6 +337,30 @@
 
     if($stmt->execute() === FALSE)
       die('Error inserting clock into CLOCK_PERMS table: ' . $name);
+
+    $stmt = NULL;
+
+  }
+
+  /**
+   * Updates a given clocks short name/code to a new code
+   * Check with code exists before using this
+   * @param $PDO PDO connection to use
+   * @param $clockName Name of clock to update
+   * @param $newCode Code to change clock too
+   * dies on error
+   */
+  function updateClockCode($PDO, $clockName, $newCode){
+
+    $sql = 'UPDATE `CLOCKS` SET `SHORT_NAME` = :newCode WHERE `NAME` = :clockName';
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindParam(':newCode', $newCode);
+    $stmt->bindParam(':clockName', $clockName);
+
+    if($stmt->execute() === FALSE)
+      die('Error updating CLOCK ' . $clockName . ' code to ' . $newCode);
+
+    $stmt = NULL;
 
   }
 

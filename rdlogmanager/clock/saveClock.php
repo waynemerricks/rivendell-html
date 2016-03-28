@@ -37,13 +37,47 @@
     }else if($_POST['mode'] == 'save'){
 
       if($_POST['originalName'] != $_POST['name']){
-        echo 'RENAME';
+
         //CHECK NAME EXISTS (IT SHOULDN'T)
+        if(clockExists($PDO, $_POST['name']))
+          die('Clock ' . $_POST['name'] . ' already exists, change it and try again');
+
+        //CHECK NEW CODE EXISTS (IT SHOULDN'T)
+        if($_POST['shortName'] != $_POST['originalShortName']){
+
+          //Code is changing too, lets check for new code
+          if(clockCodeExists($PDO, $_POST['shortName']))
+            die('Clock Code ' . $_POST['shortName']
+                . ' already exists, change it and try again');
+
+        }
+
         //CHECK ORIGINAL EXISTS (IT SHOULD)
+        if(!clockExists($PDO, $_POST['originalName']))
+          die('Original clock ' . $_POST['originalName']
+               . ' can\'t be found, cannot rename');
+
         //SAVE EVENTS TO ORIGINAL CLOCK TABLE
+        saveEvents($PDO, $_POST['originalName'], $_POST['events']);
+
+        //UPDATE CODE IF CHANGED
+        if($_POST['originalShortName'] != $_POST['shortName'])
+          updateClockCode($PDO, $_POST['originalName'], $_POST['shortName']);
+
         //RENAME TABLES (CLOCK AND CLOCK RULES)
+        renameClockTables($PDO, $_POST['originalName'], $_POST['name']);
+
         //RENAME IN CLOCKS
+        renameClock($PDO, $_POST['originalName'], $_POST['name']);
+
+        //RENAME IN CLOCK_PERMS
+        renameClockPerms($PDO, $_POST['originalName'], $_POST['name']);
+
         //RENAME IN GRIDS
+        renameClockInGrids($PDO, $_POST['originalName'], $_POST['name']);
+
+        echo 'Clock ' . $_POST['originalName'] . ' has been renamed to ' . $_POST['name'];
+
       }else{
         echo 'SAVE';
         //CHECK NAME EXISTS (IT SHOULD)
