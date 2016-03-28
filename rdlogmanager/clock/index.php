@@ -150,6 +150,7 @@
           <input id="originalName" name="originalName" type="hidden" value="<?php if(!$newClock)echo $clocks[$selectedClock]['NAME']; ?>">
           <input id="originalShortName" name="originalShortName" type="hidden" value="<?php if(!$newClock)echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
           <input id="service" name="service" type="hidden" value="<?php echo $serviceNames[$selectedService]; ?>">
+          <input id="serviceNo" name="serviceNo" type="hidden" value="<?php echo $selectedService; ?>">
           <label for="clockName">Clock Name:</label>
           <input id="clockName" name="clockName" type="text" maxlength="58" value="<?php if(!$newClock)echo $selectedClock; ?>">
           <label for="clockShortName">Clock Code:</label>
