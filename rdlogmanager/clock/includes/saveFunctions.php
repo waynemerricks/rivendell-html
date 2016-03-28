@@ -225,4 +225,24 @@
 
   }
 
+  /**
+   * Adds a clock to the CLOCK_PERMS table
+   * @param $name CLOCK_NAME
+   * @param $service SERVICE_NAME
+   * Dies on error
+   */
+  function addClockPerms($PDO, $name, $service){
+
+    $sql = 'INSERT INTO `CLOCK_PERMS` (`CLOCK_NAME`, `SERVICE_NAME`)
+            VALUES (:name, :service)';
+
+    $stmt = $PDO->prepare($sql);
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':service', $service);
+
+    if($stmt->execute() === FALSE)
+      die('Error inserting clock into CLOCK_PERMS table: ' . $name);
+
+  }
+
 ?>

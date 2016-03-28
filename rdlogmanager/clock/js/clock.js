@@ -487,11 +487,27 @@ function saveAsClock(){
 
 }
 
+function showWorking(){
+
+  //Show working
+  document.getElementById('working').style.display = 'block';
+
+}
+
+function hideWorking(){
+
+  //Show working
+  document.getElementById('working').style.display = 'none';
+
+}
+
 /**
  * Called by as part of saveClock or saveAsClock
  * @param mode: save, saveas
  */
 function save(mode){
+
+    showWorking();
 
     if(document.getElementById('clockTimeLeft').getAttribute('class')
           .indexOf('overLimit') != -1){
@@ -529,6 +545,7 @@ function save(mode){
       var originalShortName = document.getElementById('originalShortName')
             .value;
       var colour = document.getElementById('clockColour').value;
+      var service = document.getElementById('service').value;
 
       //Post it
       var save = jQuery.post('saveClock.php', { name: name,
@@ -536,15 +553,18 @@ function save(mode){
             originalName: originalName,
             originalShortName: originalShortName,
             colour: colour,
+            service: service,
             mode: mode,
             events: saveMe })
         .done(function(data){
 
+          hideWorking();
           alert(data);
 
         })
         .fail(function(XMLHttpRequest, textStatus, errorThrown){
 
+          hideWorking();
           alert('Failed to save Clock (' + XMLHttpRequest.status + ') '
               + XMLHttpRequest.statusText);
           console.log(XMLHttpRequest);

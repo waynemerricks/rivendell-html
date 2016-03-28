@@ -4,12 +4,13 @@
   include('includes/saveFunctions.php');
 
   if(isset($_POST['name'], $_POST['shortName'], $_POST['originalName'],
-        $_POST['originalShortName'], $_POST['mode'], $_POST['events'], $_POST['colour'])){
+        $_POST['originalShortName'], $_POST['mode'], $_POST['events'], $_POST['colour'],
+        $_POST['service'])){
 
     $PDO = getDatabaseConnection();
 
     if($_POST['originalName'] == ''){
-      echo 'SAVE NEW CLOCK';
+
       //CHECK NAME EXISTS (IT SHOULDN'T)
       if(clockExists($PDO, $_POST['name']))
         die('Clock ' . $_POST['name'] . ' already exists, change it and try again');
@@ -19,14 +20,19 @@
         die('Clock Code ' . $_POST['shortName']
             . ' already exists, change it and try again');
 
-      //ADD CLOCK TO CLOCKS TABLE: TODO Artist Sep + Remarks
-      addClock($PDO, $_POST['name'], $_POST['shortName'], $_POST['colour'], 5, '');
-
       //CREATE NEW TABLE (CLOCK + RULES)
       createClockTables($PDO, $_POST['name']);
 
       //SAVE EVENTS TO NEW TABLE
       saveEvents($PDO, $_POST['name'], $_POST['events']);
+
+      //ADD CLOCK TO CLOCKS TABLE: TODO Artist Sep + Remarks
+      addClock($PDO, $_POST['name'], $_POST['shortName'], $_POST['colour'], 5, '');
+
+      //ADD CLOCK TO CLOCKS PERMS under currently selected Service
+      addClockPerms($PDO, $_POST['name'], $_POST['service']);
+
+      echo 'Clock ' . $_POST['name'] . ' has been saved';
 
     }else if($_POST['mode'] == 'save'){
 
