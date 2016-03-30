@@ -558,7 +558,6 @@ function save(mode){
             events: saveMe })
         .done(function(data){
 
-          hideWorking();
           alert(data);
           console.log('Saved so reloading');
           window.location = '?name=' + name + '&service=' + document.getElementById('serviceNo').value;
