@@ -81,7 +81,33 @@
       }else{
         echo 'SAVE';
         //CHECK NAME EXISTS (IT SHOULD)
+        if(!clockExists($PDO, $_POST['originalName']))
+          die('Can\'t save as existing clock is missing from database: '
+              . $_POST['originalName);
+
+        //NAME CHANGES ARE HANDLED ABOVE
+        //CHECK SHORT NAME is SAME
+        if($_POST['originalShortName'] != $_POST['shortName']){
+
+          //Need to update short name
+          //MAKE SURE ORIGINAL CODE EXISTS
+          if(!clockCodeExists($_POST['originalShortName']))
+            die('Existing clock code is missing from database: '
+                . $_POST['originalShortName']);
+
+          //MAKE SURE NEW CODE DOESN'T EXIST
+          if(clockCodeExists($_POST['shortName']))
+            die('Can\'t save new clock code as it already exists');
+
+          //Checks complete, update code
+          //AMEND SHORT NAME
+          updateClockCode($PDO, $_POST['originalName'], $_POST['shortName']);
+
+        }
+
         //SAVE EVENTS TO CLOCK TABLE
+        saveEvents($PDO, $_POST['originalName'], $_POST['events']);
+
       }
 
     }else if($_POST['mode'] == 'saveas'){
