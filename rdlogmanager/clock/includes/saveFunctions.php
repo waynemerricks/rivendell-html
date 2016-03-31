@@ -314,9 +314,60 @@
 
   }
 
-  function copyClock($PDO, $sourceName, $copyName){
+  /**
+   * Copies a given clock table to a new table, includes the data this contains
+   * @param $PDO PDO Connection to use
+   * @param $sourceName Name of Clock to copy
+   * @param $copyName Name of Copy
+   * dies on error
+   */
+  function copyClockTable($PDO, $sourceName, $copyName){
 
-    //TODO
+    $sourceTableName = str_replace(' ', '_', $sourceName);
+    $sourceTableName = escapeTableName($PDO, $sourceTableName . '_CLK');
+    $copyTableName = str_replace(' ', '_', $copyName);
+    $copyTableName = escapeTableName($PDO, $copyTableName . '_CLK');
+
+    //Create tables with indexes etc
+    $sql = 'CREATE TABLE ' . $copyTableName . ' LIKE ' . $sourceTableName;
+
+    if($PDO->query($sql) === FALSE)
+      die('Error copying clock table from ' . $sourceTableName . ' to ' . $copyTableName);
+
+    //Insert records from source to copy
+    $sql = 'INSERT ' . $copyTableName . ' SELECT * FROM ' . $sourceTableName;
+
+    if($PDO->query($sql) === FALSE)
+      die('Error copying clock data from ' . $sourceTableName . ' to ' . $copyTableName);
+
+  }
+
+  /**
+   * Copies a given clocks rules to a new table
+   * @param $PDO PDO Connection to use
+   * @param $sourceName Name of Clock to copy
+   * @param $copyName Name of Copy
+   * dies on error
+   */
+  function copyClockRulesTable($PDO, $sourceName, $copyName){
+
+    $sourceTableName = str_replace(' ', '_', $sourceName);
+    $sourceTableName = escapeTableName($PDO, $sourceTableName . '_RULES');
+    $copyTableName = str_replace(' ', '_', $copyName);
+    $copyTableName = escapeTableName($PDO, $copyTableName . '_RULES');
+
+    //Create tables with indexes etc
+    $sql = 'CREATE TABLE ' . $copyTableName . ' LIKE ' . $sourceTableName;
+
+    if($PDO->query($sql) === FALSE)
+      die('Error copying clock rules table from ' . $sourceTableName . ' to '
+          . $copyTableName);
+
+    //Insert records from source to copy
+    $sql = 'INSERT ' . $copyTableName . ' SELECT * FROM ' . $sourceTableName;
+
+    if($PDO->query($sql) === FALSE)
+      die('Error copying clock rules from ' . $sourceTableName . ' to ' . $copyTableName);
 
   }
 

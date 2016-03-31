@@ -83,7 +83,7 @@
         //CHECK NAME EXISTS (IT SHOULD)
         if(!clockExists($PDO, $_POST['originalName']))
           die('Can\'t save as existing clock is missing from database: '
-              . $_POST['originalName);
+              . $_POST['originalName']);
 
         //NAME CHANGES ARE HANDLED ABOVE
         //CHECK SHORT NAME is SAME
@@ -113,14 +113,28 @@
     }else if($_POST['mode'] == 'saveas'){
 
       if($_POST['originalName'] != $_POST['name']){
-        echo 'SAVE COPY';
+
         //CHECK NAME EXISTS (IT SHOULDN'T)
+        if(clockCodeExists($_POST['name']))
+          die('Can\'t save as this name, it already exists: ' . $_POST['name']);
+
         //CHECK ORIGINAL EXISTS (IT SHOULD)
+        if(!clockCodeExists($_POST['originalName']))
+          die('Can\'t save this clock, the original clock is missing from the database');
+
         //COPY ORIGINAL TABLE
+        copyClockTable($PDO, $_POST['originalName'], $_POST['name']);
+
         //COPY ORIGINAL RULES
+        copyClockRulesTable($PDO, $_POST['originalName'], $_POST['name']);
+
         //SAVE EVENTS TO NEW TABLE
+        /* We save the events separately because the user might have tried to copy this
+         * clock with amended events */
+        saveEvents($PDO, $_POST['name'], $_POST['events']);
+
       }else{
-        echo 'CAN\'T SAVE AS SAME CLOCK';
+        echo 'Can\'t save as same clock';
       }
 
     }
