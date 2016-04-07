@@ -1,6 +1,7 @@
 <?php
 
   include('../../config/database.php');
+  include('includes/commonFunctions.php');
   include('includes/saveFunctions.php');
 
   if(isset($_POST['name'], $_POST['shortName'], $_POST['originalName'],
