@@ -147,14 +147,14 @@
       $colour = $clocks[$selectedClock]['COLOR'];
 ?>
           </h2>
-          <input id="originalName" name="originalName" type="hidden" value="<?php if(!$newClock)echo $clocks[$selectedClock]['NAME']; ?>">
-          <input id="originalShortName" name="originalShortName" type="hidden" value="<?php if(!$newClock)echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
+          <input id="originalName" name="originalName" type="hidden" value="<?php if(!$newClock && isset($clocks[$selectedClock]))echo $clocks[$selectedClock]['NAME']; ?>">
+          <input id="originalShortName" name="originalShortName" type="hidden" value="<?php if(!$newClock && isset($clocks[$selectedClock]))echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
           <input id="service" name="service" type="hidden" value="<?php echo $serviceNames[$selectedService]; ?>">
           <input id="serviceNo" name="serviceNo" type="hidden" value="<?php echo $selectedService; ?>">
           <label for="clockName">Clock Name:</label>
           <input id="clockName" name="clockName" type="text" maxlength="58" value="<?php if(!$newClock)echo $selectedClock; ?>">
           <label for="clockShortName">Clock Code:</label>
-          <input id="clockShortName" name="clockShortName" type="text" maxlength="3" value="<?php if(!$newClock)echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
+          <input id="clockShortName" name="clockShortName" type="text" maxlength="3" value="<?php if(!$newClock && isset($clocks[$selectedClock]))echo $clocks[$selectedClock]['SHORT_NAME']; ?>">
           <label for="clockColour">Colour:</label>
           <input id="clockColour" class="jscolor" name="clockColour" type="text" maxlength="7" value="<?php echo $colour; ?>">
           <label for="clockTimeLeft">Time Left:</label>
