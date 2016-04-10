@@ -245,30 +245,6 @@
 
   }
 
-  function renameClockInGrids($PDO, $oldName, $newName){
-
-    /* Can only really brute force through all 167 clock columns
-     * changes coming in Riv github means this won't be an issue (CLOCK_SVC table)
-     * in newer versions than 2.10.3 */
-    for($i = 0; $i < 168; $i++){
-
-      $sql = 'UPDATE `SERVICES` SET `CLOCK' . $i . '` = :newName
-              WHERE `CLOCK' . $i . '` = :oldName';
-
-      $stmt = $PDO->prepare($sql);
-      $stmt->bindParam(':newName', $newName);
-      $stmt->bindParam(':oldName', $oldName);
-
-      if($stmt->execute() === FALSE)
-        die('Failed to rename SERVICE Table CLOCK' . $i . ' from ' . $oldName . ' to '
-            . $newName);
-
-      $stmt = NULL;
-
-    }//End Clocks For Loop
-
-  }
-
   /**
    * Copies a given clock table to a new table, includes the data this contains
    * @param $PDO PDO Connection to use
