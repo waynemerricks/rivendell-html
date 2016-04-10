@@ -429,10 +429,15 @@ function deleteClock(){
     alert('Can\'t delete this clock');//You were trying to add one
   else if(confirm('Delete current clock from database?')){
 
+    showWorking();
+    
     var deleteMe = jQuery.post('deleteClock.php', { name: clock[0].value })
         .done(function(data){
 
           alert(data);
+          //reload the page
+          console.log('Deleted so reloading');
+          window.location = '?';
 
         })
         .fail(function(XMLHttpRequest, textStatus, errorThrown){
