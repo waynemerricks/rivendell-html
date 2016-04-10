@@ -17,6 +17,10 @@
         die('Clock ' . $_POST['name'] . ' already exists, change it and try again');
 
       //AND CODE
+      //Make sure we have a code, if not try first 3 chars of name
+      if(strlen($_POST['shortName']) < 1)
+        $_POST['shortName'] = substr($_POST['name'], 0, 3);
+      
       if(clockCodeExists($PDO, $_POST['shortName']))
         die('Clock Code ' . $_POST['shortName']
             . ' already exists, change it and try again');
