@@ -13,6 +13,13 @@ work properly with newer versions (2.11+).
 includes a change from CLOCK TABLES to a CLOCKS_METADATA table containing all
 the clocks.
 
+The pictures below show how clocks and grids support drag and drop with list
+insertion and all other expected goodness (feel free to tweak css to make it
+look nicer):
+
+![Grids Proof of Concept](/graphics/grids_demo.png?raw=true "Grids Proof of Concept")
+![Clocks Proof of Concept](/graphics/clocks_demo.png?raw=true "Clocks Proof of Concept")
+
 ### What do you mean non-critical?
 
 Anything that doesn't have to run in real time e.g. rdairplay for radio 
